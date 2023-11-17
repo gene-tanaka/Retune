@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <Text style={styles.title}>Feed</Text>
+        <Text style={styles.title}>Explore page</Text>
       </View>
     </View>
   );
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 24,
+    backgroundColor: "#232324",
   },
   main: {
     flex: 1,
@@ -26,10 +27,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 64,
+    color: "white",
     fontWeight: "bold",
   },
   subtitle: {
     fontSize: 36,
-    color: "#38434D",
+    color: "white",
   },
 });
