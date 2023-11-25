@@ -1,14 +1,38 @@
-import { StyleSheet, Text, View } from "react-native";
-
-import { Link } from "expo-router";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import { users } from "./constants";
 
 export default function Page() {
+  const [currentUserIndex, setCurrentUserIndex] = useState(0);
+
+  const handlePass = () => {
+      if (currentUserIndex < users.length - 1) {
+          setCurrentUserIndex(currentUserIndex + 1);
+      } else {
+          setCurrentUserIndex(users.length);
+      }
+  };
+
+  const handleRefresh = () => {
+      setCurrentUserIndex(0);
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Explore page</Text>
+      <View style={styles.container}>
+          {currentUserIndex < users.length ? (
+              <View style={styles.main}>
+                  <Text style={styles.title}>{users[currentUserIndex].userName}</Text>
+                  <Text style={styles.subtitle}>{users[currentUserIndex].firstName} {users[currentUserIndex].lastName}</Text>
+                  <Text>{users[currentUserIndex].description}</Text>
+                  <Button onPress={handlePass} title="Pass" />
+              </View>
+          ) : (
+              <View style={styles.main}>
+                  <Text>No new users at the moment! Please try again later or refresh.</Text>
+                  <Button onPress={handleRefresh} title="Refresh" />
+              </View>
+          )}
       </View>
-    </View>
   );
 }
 
