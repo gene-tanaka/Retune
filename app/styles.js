@@ -21,16 +21,16 @@ const styles = StyleSheet.create({
     userList: {
         width: '100%',
     },
-    userCard: {
+    searchListCard: {
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 10,
         marginBottom: 10,
     },
-    userText: {
+    searchListCardText: {
         color: 'black',
     },
-    card: {
+    exploreCard: {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',

@@ -21,8 +21,8 @@ export default function Page() {
 
     const filteredUsers = users.filter(user => {
         const fullName = `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase();
-        const userName = user.userName ? user.userName.toLowerCase() : '';
-        return fullName.includes(searchQuery.toLowerCase()) || userName.includes(searchQuery.toLowerCase());
+        const username = user.username ? user.username.toLowerCase() : '';
+        return fullName.includes(searchQuery.toLowerCase()) || username.includes(searchQuery.toLowerCase());
     });
 
     const renderInitials = (firstName, lastName) => {
@@ -41,15 +41,15 @@ export default function Page() {
             {searchQuery ? (
                 <ScrollView style={styles.userList}>
                     {filteredUsers.map(user => (
-                        <View key={user.id} style={styles.userCard}>
-                            <Text style={styles.userText}>{user.userName}</Text>
-                            <Text style={styles.userText}>{user.firstName} {user.lastName}</Text>
+                        <View key={user.id} style={styles.searchListCard}>
+                            <Text style={styles.searchListCardText}>{user.username}</Text>
+                            <Text style={styles.searchListCardText}>{user.firstName} {user.lastName}</Text>
                         </View>
                     ))}
                 </ScrollView>
             ) : currentUserIndex < users.length ? (
                 <View>
-                    <View style={styles.card}>
+                    <View style={styles.exploreCard}>
                         <Text style={styles.username}>@{users[currentUserIndex].username}</Text>
                         <Text style={styles.about}>About {users[currentUserIndex].firstName} {users[currentUserIndex].lastName}</Text>
                         <View style={styles.profilePic}>
@@ -70,7 +70,7 @@ export default function Page() {
                 </View>
             ) : (
                 <View>
-                    <View style={styles.card}>
+                    <View style={styles.exploreCard}>
                         <Text>No new users at the moment! Please try again later or refresh.</Text>
                     </View>
                     <View style={styles.buttonContainer}>
