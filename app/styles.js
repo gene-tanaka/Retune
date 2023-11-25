@@ -8,6 +8,28 @@ const styles = StyleSheet.create({
         padding: 24,
         backgroundColor: "#232324",
     },
+    searchBar: {
+        height: 40,
+        width: '100%',
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 20,
+        padding: 10,
+        marginBottom: 20,
+        color: 'white',
+    },
+    userList: {
+        width: '100%',
+    },
+    userCard: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 10,
+    },
+    userText: {
+        color: 'black',
+    },
     card: {
         alignItems: 'center',
         justifyContent: 'center',

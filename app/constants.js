@@ -1,7 +1,7 @@
 export const users = [
     {
         id: 1,
-        userName: 'sophiejin',
+        username: 'sophiejin',
         firstName: 'Sophie',
         lastName: 'Jin',
         description: 'Hi! I’m Sophie and I’m a grad student at Stanford. Talk to me about K-indie, city pop, or hip-hop!',
@@ -10,7 +10,7 @@ export const users = [
     },
     {
         id: 2,
-        userName: 'jennylee',
+        username: 'jennylee',
         firstName: 'Jenny',
         lastName: 'Lee',
         description: 'Hi! I’m Jenny and I’m a senior at Stanford. Talk to me about K-indie, city pop, or hip-hop!',
@@ -19,7 +19,7 @@ export const users = [
     },
     {
         id: 3,
-        userName: 'ethankim',
+        username: 'ethankim',
         firstName: 'Ethan',
         lastName: 'Kim',
         description: 'Hi! I’m Ethan and I’m a junior at Stanford. Talk to me about K-indie, city pop, or hip-hop!',
