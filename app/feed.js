@@ -1,25 +1,24 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
-import { users } from "./constants";
+import { mockUsers } from "./constants";
 import styles from "./styles";
+import { useUser } from '../contexts/UserContext';
 
 export default function Page() {
-    const [currentUserIndex, setCurrentUserIndex] = useState(0);
+    const { loggedInUserId } = useUser();
+    const [exploreUserIndex, setExploreUserIndex] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
+    const exploreUsers = mockUsers.filter(user => user.id !== loggedInUserId);
 
     const handlePass = () => {
-        if (currentUserIndex < users.length - 1) {
-            setCurrentUserIndex(currentUserIndex + 1);
-        } else {
-            setCurrentUserIndex(users.length);
-        }
+        setExploreUserIndex(exploreUserIndex + 1);
     };
 
     const handleRefresh = () => {
-        setCurrentUserIndex(0);
+        setExploreUserIndex(0);
     };
 
-    const filteredUsers = users.filter(user => {
+    const filteredUsers = exploreUsers.filter(user => {
         const fullName = `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase();
         const username = user.username ? user.username.toLowerCase() : '';
         return fullName.includes(searchQuery.toLowerCase()) || username.includes(searchQuery.toLowerCase());
@@ -47,17 +46,17 @@ export default function Page() {
                         </View>
                     ))}
                 </ScrollView>
-            ) : currentUserIndex < users.length ? (
+            ) : exploreUserIndex < exploreUsers.length ? (
                 <View>
                     <View style={styles.exploreCard}>
-                        <Text style={styles.username}>@{users[currentUserIndex].username}</Text>
-                        <Text style={styles.about}>About {users[currentUserIndex].firstName} {users[currentUserIndex].lastName}</Text>
+                        <Text style={styles.username}>@{exploreUsers[exploreUserIndex].username}</Text>
+                        <Text style={styles.about}>About {exploreUsers[exploreUserIndex].firstName} {exploreUsers[exploreUserIndex].lastName}</Text>
                         <View style={styles.profilePic}>
                             <Text style={styles.initials}>
-                                {renderInitials(users[currentUserIndex].firstName, users[currentUserIndex].lastName)}
+                                {renderInitials(exploreUsers[exploreUserIndex].firstName, exploreUsers[exploreUserIndex].lastName)}
                             </Text>
                         </View>
-                        <Text style={styles.description}>{users[currentUserIndex].description}</Text>
+                        <Text style={styles.description}>{exploreUsers[exploreUserIndex].description}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={handlePass}>
