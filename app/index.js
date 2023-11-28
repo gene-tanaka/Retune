@@ -1,38 +1,48 @@
-import { StyleSheet, Text, View } from "react-native";
-
-import { Link } from "expo-router";
+import { Pressable, Image, Text, StyleSheet, View } from "react-native";
+import { router } from "expo-router";
+import { useSpotifyAuth } from "../utils";
+import { useEffect } from "react";
+import { Themes } from "../assets/Themes";
 
 export default function Page() {
+  const { token, getSpotifyAuth } = useSpotifyAuth();
+  useEffect(() => {
+    if (token) {
+      global.token = token;
+      router.replace({ pathname: `/tabs` });
+    }
+  }, [token]);
   return (
     <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello World</Text>
-        <Text style={styles.subtitle}>This is the first page of your app.</Text>
-      </View>
+      <Text style={styles.title}>Welcome to Retune!</Text>
+      <Pressable onPress={() => getSpotifyAuth()} style={styles.button}>
+        <Image
+          source={require("../assets/spotify-logo-copy.png")}
+          style={{ width: 15, aspectRatio: 1, marginRight: 5 }}
+        />
+        <Text style={{ color: "white" }}>CONNECT WITH SPOTIFY</Text>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-    backgroundColor: "#232324",
-  },
-  main: {
-    flex: 1,
+    backgroundColor: Themes.colors.background,
     justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
+    alignItems: "center",
+    flex: 1,
+  },
+  button: {
+    backgroundColor: "green",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    padding: 10,
+    borderRadius: 20,
+    margin: 15,
   },
   title: {
-    fontSize: 64,
-    fontWeight: "bold",
-    color: "white",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "white",
+    color: Themes.colors.text,
+    fontSize: 25,
   },
 });
