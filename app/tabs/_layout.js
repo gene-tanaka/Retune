@@ -51,6 +51,7 @@ export default function HomeLayout() {
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="flash-sharp" size={30} color={color} />
             ),
+            headerShown: true,
           }}
         />
         <Tabs.Screen
