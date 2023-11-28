@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { mockUsers } from "./constants";
-import styles from "./styles";
+import styles from "../../styles";
 import { useUser } from '../../contexts/UserContext';
 
 export default function Page() {
