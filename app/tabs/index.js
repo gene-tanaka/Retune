@@ -1,12 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
-
-import { Link } from "expo-router";
+import {
+  Link,
+  useLocalSearchParams,
+  useGlobalSearchParams,
+  router,
+} from "expo-router";
 
 export default function Page() {
   return (
     <View style={styles.container}>
       <View style={styles.main}>
-        <Text style={styles.title}>Posting</Text>
+        <Text style={styles.title}>Hello World</Text>
+        <Text style={styles.subtitle}>This is the first page of your app.</Text>
       </View>
     </View>
   );
@@ -28,6 +33,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 64,
     fontWeight: "bold",
+    color: "white",
+  },
+  subtitle: {
+    fontSize: 36,
     color: "white",
   },
 });
