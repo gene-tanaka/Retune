@@ -9,7 +9,7 @@ import {
 import styles from "../../styles";
 import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
-import { getAllUsers } from "./api";
+import { getAllUsers } from "../api";
 
 export default function Page() {
   const { loggedInUserId } = useUser();
