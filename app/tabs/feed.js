@@ -7,16 +7,24 @@ import {
   ScrollView,
   ImageBackground,
 } from "react-native";
-import { mockUsers } from "./constants";
 import styles from "../../styles";
 import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
+import { getAllUsers } from "../api";
 
 export default function Page() {
   const { loggedInUserId } = useUser();
   const [exploreUserIndex, setExploreUserIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const exploreUsers = mockUsers.filter((user) => user.id !== loggedInUserId);
+  const [users, setUsers] = useState([]);
+  React.useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await getAllUsers();
+      setUsers(response);
+    };
+    fetchUsers();
+  }, []);
+  const exploreUsers = users.filter((user) => user.id !== loggedInUserId);
 
   const handlePass = () => {
     setExploreUserIndex(exploreUserIndex + 1);
