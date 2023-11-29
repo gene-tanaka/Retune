@@ -24,7 +24,11 @@ const windowWidth = Dimensions.get("window").width;
 const Post = ({ user, image, caption, preview, title, artist, duration }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={[styles.text, { fontSize: 20 }]}>{user}</Text>
+      <Pressable>
+        <View style={styles.userContainer}>
+          <Text style={[styles.text, { fontSize: 18 }]}>{user}</Text>
+        </View>
+      </Pressable>
       <Image source={{ uri: image }} style={styles.image} />
       <SongPreview
         user={user}
@@ -49,15 +53,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  songContainer: {
+  userContainer: {
     backgroundColor: Themes.colors.containers,
     flexDirection: "row",
     borderRadius: 25,
-    justifyContent: "space-evenly",
     padding: 8,
-    alignItems: "center",
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.12,
+    justifyContent: "center",
   },
   image: {
     flexDirection: "column",

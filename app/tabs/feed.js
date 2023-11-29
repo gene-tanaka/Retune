@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { mockUsers } from "./constants";
 import styles from "../../styles";
@@ -41,7 +42,11 @@ export default function Page() {
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../../assets/wavy.png")}
+      resizeMode="cover"
+      style={styles.background}
+    >
       <TextInput
         style={styles.searchBar}
         placeholder="Search by name or username"
@@ -49,6 +54,7 @@ export default function Page() {
         onChangeText={(text) => setSearchQuery(text)}
         value={searchQuery}
       />
+
       {searchQuery ? (
         <ScrollView style={styles.userList}>
           {filteredUsers.map((user) => (
@@ -62,6 +68,14 @@ export default function Page() {
         </ScrollView>
       ) : exploreUserIndex < exploreUsers.length ? (
         <View>
+          <Text>
+            {"\n"}
+            {"\n"}
+            {"\n"}
+            {"\n"}
+            {"\n"}
+            {"\n"}
+          </Text>
           <View style={styles.exploreCard}>
             <Text style={styles.username}>
               @{exploreUsers[exploreUserIndex].username}
@@ -84,10 +98,10 @@ export default function Page() {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handlePass}>
-              <Text>Pass</Text>
+              <Text style={{ color: "white", fontSize: 18 }}>Pass</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => {}}>
-              <Text>Add Friend</Text>
+              <Text style={{ color: "white", fontSize: 18 }}>Follow</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -105,6 +119,6 @@ export default function Page() {
           </View>
         </View>
       )}
-    </View>
+    </ImageBackground>
   );
 }

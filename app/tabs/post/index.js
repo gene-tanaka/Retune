@@ -30,6 +30,14 @@ export default function Page() {
       setImage(result.assets[0].uri);
     }
   };
+  let shown = null;
+  if (!image) {
+    shown = (
+      <Text style={{ color: Themes.colors.secondary, fontSize: 20 }}>
+        No image yet
+      </Text>
+    );
+  }
 
   return (
     <ImageBackground
@@ -42,6 +50,7 @@ export default function Page() {
       </TouchableOpacity>
       <View style={styles.subContainer}>
         {image && <Image source={{ uri: image }} style={styles.image} />}
+        {shown}
       </View>
       <TouchableOpacity
         style={styles.button}
