@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
     "@types/react": "~18.2.14",
     "axios": "^1.6.2",
     "expo": "^49.0.18",
@@ -21,6 +22,7 @@
     "expo-linking": "~5.0.2",
     "expo-router": "^2.0.0",
     "expo-status-bar": "~1.6.0",
+    "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-gesture-handler": "~2.12.0",
@@ -28,7 +30,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-sound": "^0.11.2",
     "react-native-track-player": "^4.0.1",
-    "react-native-webview": "13.2.2",
+    "react-native-url-polyfill": "^2.0.0",
+    "react-native-webview": "^13.6.3",
     "typescript": "^5.1.3"
   },
   "devDependencies": {
