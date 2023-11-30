@@ -12,6 +12,7 @@ export default function Page() {
       router.replace({ pathname: `/tabs` });
     }
   }, [token]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to Retune!</Text>
