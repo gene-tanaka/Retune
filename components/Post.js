@@ -11,24 +11,29 @@ import {
   ScrollView,
   Touchable,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
 import { Themes } from "../assets/Themes";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Link } from "expo-router";
-import { Audio } from "expo-av";
-import { useState } from "react";
 import SongPreview from "../components/SongPreview";
+import { FontAwesome } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 
 const Post = ({ user, image, caption, preview, title, artist, duration }) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable>
-        <View style={styles.userContainer}>
-          <Text style={[styles.text, { fontSize: 18 }]}>{user}</Text>
+      <View style={styles.userContainer}>
+        <View style={styles.userSubContainer}>
+          <Image source={{ uri: image }} style={styles.profilePicture} />
+          <Button
+            style={[styles.text, { fontSize: 18 }]}
+            color="white"
+            title={user}
+          />
         </View>
-      </Pressable>
+        <TouchableOpacity>
+          <FontAwesome name="comment" size={25} color="white" />
+        </TouchableOpacity>
+      </View>
       <Image source={{ uri: image }} style={styles.image} />
       <SongPreview
         user={user}
@@ -57,8 +62,18 @@ const styles = StyleSheet.create({
     backgroundColor: Themes.colors.containers,
     flexDirection: "row",
     borderRadius: 25,
-    padding: 8,
-    justifyContent: "center",
+    padding: 5,
+    paddingRight: 10,
+    justifyContent: "space-between",
+    width: windowWidth * 0.9,
+    alignItems: "center",
+    alignContent: "center",
+  },
+  userSubContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    alignContent: "center",
   },
   image: {
     flexDirection: "column",
@@ -68,8 +83,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignContent: "space-between",
     margin: 15,
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.7,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.9,
+  },
+  profilePicture: {
+    borderRadius: 50,
+    height: 40,
+    width: 40,
   },
   text: {
     color: "white",
@@ -82,20 +102,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     alignContent: "flex-start",
     padding: 15,
-    width: windowWidth * 0.7,
+    width: windowWidth * 0.9,
     height: windowWidth * 0.2,
     margin: 15,
-  },
-  button: {
-    flexDirection: "column",
-    backgroundColor: "#343436",
-    borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "space-between",
-    width: windowWidth * 0.3,
-    height: windowWidth * 0.07,
-    margin: 45,
-    backgroundColor: Themes.colors.buttons,
   },
 });

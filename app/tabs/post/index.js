@@ -57,7 +57,7 @@ export default function Page() {
         onPress={() =>
           router.push({
             pathname: "/tabs/post/search",
-            params: { image: image },
+            params: { image: image, user: "user" },
           })
         }
       >
@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.7,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.9,
   },
   image: {
     flexDirection: "column",
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.7,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.9,
     position: "absolute",
   },
   text: {
