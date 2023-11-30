@@ -1,4 +1,12 @@
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  SafeAreaView,
+  FlatList,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
 import {
@@ -14,6 +22,22 @@ import {
   useGlobalSearchParams,
   router,
 } from "expo-router";
+
+const MyPost = ({ data, usernames }) => {
+  const post = data.item;
+  return (
+    <Post
+      key={post.id}
+      user={"@" + usernames[post.userId]}
+      image={post.imageUrl}
+      caption={post.caption}
+      preview={post.preview}
+      title={post.title}
+      artist={post.artist}
+      duration={post.duration}
+    />
+  );
+};
 
 export default function Page() {
   const { loggedInUserId } = useUser();
@@ -45,23 +69,13 @@ export default function Page() {
     fetchFollowing();
   }, []);
   return (
-    <ScrollView style={styles.container}>
-      {posts.map((post, index) => (
-        <Post
-          key={post.id}
-          user={"@" + usernames[post.userId]}
-          image={post.imageUrl}
-          caption={post.caption}
-          preview={post.preview}
-          title={post.title}
-          artist={post.artist}
-          duration={post.duration}
-        />
-      ))}
-      {uri ? (
-        <Image source={{ uri: uri }} style={{ width: 100, height: 100 }} />
-      ) : null}
-    </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={posts}
+        renderItem={(data) => <MyPost data={data} usernames={usernames} />}
+        contentContainerStyle={{ paddingBottom: 45, paddingTop: 30 }}
+      />
+    </SafeAreaView>
   );
 }
 
