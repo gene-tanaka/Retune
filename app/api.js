@@ -137,3 +137,75 @@ export const unfollowUser = async (followerId, followeeId) => {
     console.error(error);
   }
 };
+
+export const getPostsByUserId = async (userId) => {
+  try {
+    const { data, error } = await supabase
+      .from('Posts')
+      .select('*')
+      .eq('user_id', userId);
+
+    if (error) throw error;
+    return keysToCamel(data);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const getCommentsByPostId = async (postId) => {
+  try {
+    const { data, error } = await supabase
+      .from('Comments')
+      .select('*')
+      .eq('post_id', postId);
+
+    if (error) throw error;
+    return keysToCamel(data);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+export const createPost = async (post) => {
+  try {
+    const snakeCasePost = keysToSnake(post);
+    const { data, error } = await supabase.from("Posts").insert([snakeCasePost]);
+    if (error) throw error;
+    return keysToCamel(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deletePost = async (postId) => {
+  try {
+    const { data, error } = await supabase.from("Posts").delete().match({ id: postId });
+    if (error) throw error;
+    return keysToCamel(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const createComment = async (comment) => {
+  try {
+    const snakeCaseComment = keysToSnake(comment);
+    const { data, error } = await supabase.from("Comments").insert([snakeCaseComment]);
+    if (error) throw error;
+    return keysToCamel(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteComment = async (commentId) => {
+  try {
+    const { data, error } = await supabase.from("Comments").delete().match({ id: commentId });
+    if (error) throw error;
+    return keysToCamel(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
