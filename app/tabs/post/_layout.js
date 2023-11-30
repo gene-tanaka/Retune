@@ -9,7 +9,7 @@ export default function PostLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Image",
+          title: "Post",
           headerShown: true,
           headerStyle: { backgroundColor: Themes.colors.tab },
           headerTitleStyle: { color: "white" },
