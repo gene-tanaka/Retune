@@ -22,10 +22,14 @@ import SongPreview from "../components/SongPreview";
 const windowWidth = Dimensions.get("window").width;
 
 const Post = ({ user, image, caption, preview, title, artist, duration }) => {
+  const uri =
+    "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
+    image;
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.text, { fontSize: 20 }]}>{user}</Text>
-      <Image source={{ uri: image }} style={styles.image} />
+      {/* <Image source={{ uri: image }} style={styles.image} /> */}
+      <Image source={{ uri: uri }} style={styles.image} />
       <SongPreview
         user={user}
         preview={preview}

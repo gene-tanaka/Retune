@@ -39,6 +39,7 @@ export default function Page() {
   const [query, setQuery] = useState("");
   const params = useLocalSearchParams();
   const image = params.image;
+  const type = params.type;
   const router = useRouter();
   useSpotifyTracks(query, token, setTracks);
 
@@ -58,6 +59,7 @@ export default function Page() {
         name: album,
         duration: millisToMinutesAndSeconds(item?.duration),
         preview: item?.previewUrl,
+        type: type,
       },
     });
   };

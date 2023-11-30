@@ -16,12 +16,17 @@ import { useLocalSearchParams, router } from "expo-router";
 import { AntDesign } from "@expo/vector-icons";
 import { Themes } from "../../../assets/Themes";
 import { Audio } from "expo-av";
+import { uploadImage, createPost } from "../../api";
+import { useUser } from "../../../contexts/UserContext";
 
 const windowWidth = Dimensions.get("window").width;
 
 export default function Page() {
   const params = useLocalSearchParams();
+  const { loggedInUserId } = useUser();
   const preview = params.preview;
+  const image = params.image;
+  const type = params.type;
   const [caption, setCaption] = useState("");
   const [currentSound, setCurrentSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -142,19 +147,22 @@ export default function Page() {
         </View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
+          onPress={async () => {
+            const filepath = await uploadImage(image, type);
+            const post = {
+              user_id: loggedInUserId,
+              caption: caption,
+              image_url: filepath,
+              preview: params.preview,
+              title: params.title,
+              artist: params.artist,
+              duration: params.duration,
+            };
+            createPost(post);
             router.push({
-              pathname: "tabs/post/final",
-              params: {
-                image: params.image,
-                caption: caption,
-                preview: params.preview,
-                title: params.title,
-                artist: params.artist,
-                duration: params.duration,
-              },
-            })
-          }
+              pathname: "tabs/",
+            });
+          }}
         >
           <Text style={styles.text}>Post!</Text>
         </TouchableOpacity>

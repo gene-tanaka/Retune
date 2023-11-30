@@ -14,20 +14,24 @@ import { Link, Stack, useGlobalSearchParams, router } from "expo-router";
 import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Themes } from "../../../assets/Themes";
+import { Ionicons } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function Page() {
   const [image, setImage] = useState(null);
+  const [type, setType] = useState(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
+      allowsEditing: true,
     });
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const response = result.assets[0];
+      setImage(response.uri);
+      setType(response.type);
     }
   };
 
@@ -43,12 +47,21 @@ export default function Page() {
       <View style={styles.subContainer}>
         {image && <Image source={{ uri: image }} style={styles.image} />}
       </View>
+      <View
+        style={{ position: "absolute", paddingLeft: 270, paddingBottom: 325 }}
+      >
+        <Pressable onPress={() => setImage(null)}>
+          {image ? (
+            <Ionicons name="close-circle-outline" size={30} color="red" />
+          ) : null}
+        </Pressable>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() =>
           router.push({
             pathname: "/tabs/post/search",
-            params: { image: image },
+            params: { image: image, type: type },
           })
         }
       >
