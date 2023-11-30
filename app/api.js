@@ -279,7 +279,7 @@ export const uploadImage = async (filename, type) => {
   const base64 = await FileSystem.readAsStringAsync(filename, {
     encoding: "base64",
   });
-  const filePath = `${new Date().getTime()}.${
+  const filePath = `images/${new Date().getTime()}.${
     type === "image" ? "png" : "mp4"
   }`;
   const contentType = type === "image" ? "image/png" : "video/mp4";
@@ -288,11 +288,11 @@ export const uploadImage = async (filename, type) => {
     .upload(filePath, decode(base64), {
       contentType,
     });
-  return filePath;
   if (error) {
     console.error("Error uploading image:", error.message);
     return null;
   }
+  return filePath;
 };
 
 export const retrieveImage = async (filename) => {

@@ -6,35 +6,27 @@ import {
   Image,
   SafeAreaView,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
-import {
-  getFollowingListIDs,
-  getPostsByUserIds,
-  getUsernamesByIds,
-  retrieveImage,
-} from "../api";
+import { getFollowingListIDs, getPostsByUserIds, getUsersByIds } from "../api";
 import Post from "../../components/Post";
-import {
-  Link,
-  useLocalSearchParams,
-  useGlobalSearchParams,
-  router,
-} from "expo-router";
 
 const MyPost = ({ data, usernames }) => {
   const post = data.item;
   return (
     <Post
       key={post.id}
-      user={"@" + usernames[post.userId]}
+      user={"@" + usernames[post.userId].username}
       image={post.imageUrl}
       caption={post.caption}
       preview={post.preview}
       title={post.title}
       artist={post.artist}
       duration={post.duration}
+      timestamp={post.timestamp}
+      profile={usernames[post.userId].profile}
     />
   );
 };
@@ -44,30 +36,48 @@ export default function Page() {
   const [following, setFollowing] = useState([loggedInUserId]);
   const [posts, setPosts] = useState([]);
   const [usernames, setUsernames] = useState(null);
-  const [uri, setUri] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchFollowing = async () => {
+  const fetchFollowing = async () => {
+    try {
       const followingIds = await getFollowingListIDs(loggedInUserId);
       setFollowing((current) => current.concat([...followingIds]));
       if (following.length > 0) {
-        const users = await getUsernamesByIds(following);
+        const users = await getUsersByIds(following);
         const usernameMap = users.reduce((acc, user) => {
-          acc[user.id] = user.username;
+          acc[user.id] = { username: user.username, profile: user.profilePic };
           return acc;
         }, {});
         setUsernames(usernameMap);
+
         const fetchedPosts = await getPostsByUserIds(following);
         const sortedPosts = fetchedPosts.sort((a, b) => {
           return new Date(b.timestamp) - new Date(a.timestamp);
         });
         setPosts(sortedPosts);
-        const image = await retrieveImage();
-        setUri(image.publicUrl);
       }
-    };
+    } catch (error) {
+      console.error("Error loading posts: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchFollowing();
+
+    const intervalId = setInterval(fetchFollowing, 3000); // Poll every 2 seconds
+    return () => clearInterval(intervalId); // Cleanup on unmount
   }, []);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

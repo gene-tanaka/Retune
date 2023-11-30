@@ -74,6 +74,10 @@ export default function Page() {
               duration: params.duration,
             };
             createPost(post);
+            while (router.canGoBack()) {
+              router.back();
+            }
+            router.replace("tabs/post");
             router.push({
               pathname: "tabs/",
             });

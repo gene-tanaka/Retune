@@ -11,6 +11,7 @@ import {
   ScrollView,
   Touchable,
 } from "react-native";
+import { useState } from "react";
 import { Themes } from "../assets/Themes";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SongPreview from "../components/SongPreview";
@@ -18,35 +19,98 @@ import { FontAwesome } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 
-const Post = ({ user, image, caption, preview, title, artist, duration }) => {
+const Post = ({
+  user,
+  image,
+  caption,
+  preview,
+  title,
+  artist,
+  duration,
+  timestamp,
+  profile,
+}) => {
   const uri =
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
     image;
+
+  const profile_uri =
+    "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
+    profile;
+
+  const formatDate = (dateString) => {
+    const options = { month: "short", day: "numeric" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const formatTime = (dateString) => {
+    const options = { hour: "2-digit", minute: "2-digit", hour12: true };
+    return new Date(dateString).toLocaleTimeString(undefined, options);
+  };
+  const [liked, setLiked] = useState("white");
+
+  function likeImage() {
+    if (liked === "white") {
+      setLiked("red");
+    } else {
+      setLiked("white");
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.userContainer}>
-        <View style={styles.userSubContainer}>
-          <Image source={{ uri: uri }} style={styles.profilePicture} />
-          <Button
-            style={[styles.text, { fontSize: 18 }]}
-            color="white"
-            title={user}
-          />
+      <View
+        style={{
+          alignItems: "center",
+          backgroundColor: "darkgray",
+          paddingTop: 5,
+          borderRadius: 27,
+        }}
+      >
+        <View style={styles.userContainer}>
+          <View style={styles.userSubContainer}>
+            <Image
+              source={{ uri: profile_uri }}
+              style={styles.profilePicture}
+            />
+            <Button titleStyle={{ fontSize: 18 }} color="white" title={user} />
+            <Text
+              style={{
+                color: "white",
+                fontSize: 15,
+                marginLeft: 60,
+              }}
+            >
+              {formatDate(timestamp) + ", " + formatTime(timestamp)}
+            </Text>
+          </View>
         </View>
-        <TouchableOpacity>
-          <FontAwesome name="comment" size={25} color="white" />
-        </TouchableOpacity>
-      </View>
-      <Image source={{ uri: uri }} style={styles.image} />
-      <SongPreview
-        user={user}
-        preview={preview}
-        title={title}
-        artist={artist}
-        duration={duration}
-      />
-      <View style={styles.caption}>
-        <Text style={styles.text}>{caption}</Text>
+        <Image source={{ uri: uri }} style={styles.image} />
+        <SongPreview
+          user={user}
+          preview={preview}
+          title={title}
+          artist={artist}
+          duration={duration}
+        />
+        <View style={styles.commentBar}>
+          <TouchableOpacity onPress={() => likeImage()}>
+            <FontAwesome name="heart" size={25} color={liked} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <FontAwesome
+              name="comment"
+              size={25}
+              color="white"
+              style={{ marginLeft: 15, paddingBottom: 3 }}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.caption}>
+          <Text numberOfLines={2} style={styles.text}>
+            {caption}
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -60,6 +124,18 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 10,
+  },
+  commentBar: {
+    backgroundColor: Themes.colors.containers,
+    flexDirection: "row",
+    width: windowWidth * 0.27,
+    borderRadius: 25,
+    padding: 10,
+    marginTop: 5,
+    marginLeft: -245,
+    alignItems: "center",
+    justifyContent: "center",
   },
   userContainer: {
     backgroundColor: Themes.colors.containers,
@@ -77,6 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     alignContent: "center",
+    padding: 1,
   },
   image: {
     flexDirection: "column",
@@ -85,7 +162,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
-    margin: 15,
+    margin: 5,
     width: windowWidth * 0.9,
     height: windowWidth * 0.9,
   },
@@ -107,6 +184,6 @@ const styles = StyleSheet.create({
     padding: 15,
     width: windowWidth * 0.9,
     height: windowWidth * 0.2,
-    margin: 15,
+    margin: 5,
   },
 });
