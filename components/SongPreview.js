@@ -64,14 +64,13 @@ const SongPreview = ({ user, preview, title, artist, duration }) => {
       <View
         style={{
           flexDirection: "column",
-          width: windowWidth * 0.4,
+          width: windowWidth * 0.6,
           alignItems: "flex-start",
         }}
       >
         <Text
           style={{
             color: Themes.colors.text,
-            width: styles.songContainer.width * 0.4,
           }}
           numberOfLines={1}
         >
@@ -80,7 +79,6 @@ const SongPreview = ({ user, preview, title, artist, duration }) => {
         <Text
           style={{
             color: Themes.colors.secondary,
-            width: styles.songContainer.width * 0.4,
           }}
           numberOfLines={1}
         >
@@ -90,7 +88,6 @@ const SongPreview = ({ user, preview, title, artist, duration }) => {
       <Text
         style={{
           color: Themes.colors.text,
-          marginLeft: 25,
         }}
         numberOfLines={1}
       >
@@ -116,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 8,
     alignItems: "center",
-    width: windowWidth * 0.7,
+    width: windowWidth * 0.9,
     height: windowWidth * 0.12,
   },
 });

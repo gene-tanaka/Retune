@@ -1,40 +1,48 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { Themes } from "./assets/Themes";
+
+const windowWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     padding: 24,
-    backgroundColor: "#232324",
   },
+
+  background: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: 24,
+  },
+
   searchBar: {
     height: 40,
-    width: "100%",
-    borderColor: Themes.colors.secondary,
-    borderWidth: 1,
+    width: windowWidth * 0.9,
     borderRadius: 20,
     padding: 10,
-    marginBottom: 20,
-    color: "white",
+    marginBottom: 30,
+    backgroundColor: Themes.colors.containers,
   },
   userList: {
-    width: "100%",
+    width: windowWidth * 0.9,
   },
   searchListCard: {
-    backgroundColor: "white",
+    backgroundColor: Themes.colors.containers2,
+    justifyContent: "center",
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
+    width: "100%",
   },
   searchListCardText: {
-    color: "black",
+    color: "white",
   },
   exploreCard: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: Themes.colors.containers,
     borderRadius: 20,
     padding: 20,
     shadowColor: "#000",
@@ -49,18 +57,23 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   button: {
+    flexDirection: "row",
     backgroundColor: Themes.colors.buttons,
-    padding: 10,
+    padding: 5,
     borderRadius: 20,
     marginHorizontal: 5,
+    width: windowWidth * 0.25,
+    justifyContent: "center",
   },
   username: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "white",
   },
   about: {
     fontSize: 18,
     marginVertical: 8,
+    color: Themes.colors.textSecondary,
   },
   profilePic: {
     width: 60,
@@ -78,6 +91,7 @@ const styles = StyleSheet.create({
   description: {
     textAlign: "center",
     marginBottom: 20,
+    color: Themes.colors.textSecondary,
   },
 });
 

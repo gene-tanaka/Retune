@@ -34,6 +34,14 @@ export default function Page() {
       setType(response.type);
     }
   };
+  let shown = null;
+  if (!image) {
+    shown = (
+      <Text style={{ color: Themes.colors.secondary, fontSize: 20 }}>
+        No image yet
+      </Text>
+    );
+  }
 
   return (
     <ImageBackground
@@ -46,6 +54,7 @@ export default function Page() {
       </TouchableOpacity>
       <View style={styles.subContainer}>
         {image && <Image source={{ uri: image }} style={styles.image} />}
+        {shown}
       </View>
       <View
         style={{ position: "absolute", paddingLeft: 270, paddingBottom: 325 }}
@@ -87,8 +96,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.7,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.9,
   },
   image: {
     flexDirection: "column",
@@ -97,8 +106,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.7,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.9,
     position: "absolute",
   },
   text: {
