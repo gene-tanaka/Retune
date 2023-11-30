@@ -38,7 +38,6 @@ export default function Page() {
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
   const params = useLocalSearchParams();
-  const image = params.image;
   const router = useRouter();
   useSpotifyTracks(query, token, setTracks);
 
@@ -46,12 +45,13 @@ export default function Page() {
     let artists = item.songArtists
       .map((item) => item.name)
       .join([(separator = ", ")]);
-    let title = item.songTitle.replaceAll(")", "- ").replaceAll("(", "- ");
-    let album = item.albumName.replaceAll(")", "- ").replaceAll("(", "- ");
+    let title = item.songTitle.replaceAll(")", " ").replaceAll("(", "- ");
+    let album = item.albumName.replaceAll(")", " ").replaceAll("(", "- ");
     router.push({
       pathname: "/tabs/post/caption",
       params: {
-        image: image,
+        user: params.user,
+        image: params.image,
         albumURL: item?.imageUrl,
         title: title,
         artist: artists,
@@ -81,6 +81,13 @@ export default function Page() {
     }
   };
 
+  function updateSearchQuery(text) {
+    setSearch(text);
+    setQuery(text.replace(/ /g, "+"));
+  }
+
+  console.log(search);
+  console.log(query);
   return (
     <ImageBackground
       source={require("../../../assets/wavy.png")}
@@ -98,10 +105,7 @@ export default function Page() {
             placeholder="Search"
             placeholderTextColor={Themes.colors.secondary}
             value={search}
-            onChangeText={(text) => {
-              setSearch(text);
-              setQuery(search.replace(/ /g, "+"));
-            }}
+            onChangeText={updateSearchQuery}
           />
         </ScrollView>
         <FlatList

@@ -13,53 +13,14 @@ import {
 } from "react-native";
 import { useState } from "react";
 import { useLocalSearchParams, router } from "expo-router";
-import { AntDesign } from "@expo/vector-icons";
 import { Themes } from "../../../assets/Themes";
-import { Audio } from "expo-av";
+import SongPreview from "../../../components/SongPreview";
 
 const windowWidth = Dimensions.get("window").width;
 
 export default function Page() {
   const params = useLocalSearchParams();
-  const preview = params.preview;
   const [caption, setCaption] = useState("");
-  const [currentSound, setCurrentSound] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const play = async () => {
-    try {
-      await Audio.setAudioModeAsync({
-        playsInSilentModeIOS: true,
-        staysActiveInBackground: false,
-        shouldDuckAndroid: false,
-      });
-      const { sound, status } = await Audio.Sound.createAsync(
-        {
-          uri: preview,
-        },
-        {
-          shouldPlay: true,
-          isLooping: false,
-        }
-      );
-      setCurrentSound(sound);
-      setIsPlaying(status.isLoaded);
-      await sound.playAsync();
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const handlePlayPause = async () => {
-    if (currentSound) {
-      if (isPlaying) {
-        await currentSound.pauseAsync();
-      } else {
-        await currentSound.playAsync();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   return (
     <ImageBackground
@@ -73,60 +34,13 @@ export default function Page() {
       >
         <Text style={styles.text}>Write a caption to complete your post!</Text>
         <Image source={{ uri: params.image }} style={styles.image} />
-        <View style={styles.songContainer}>
-          <TouchableOpacity onPress={handlePlayPause}>
-            {isPlaying ? (
-              <AntDesign
-                name="pausecircle"
-                size={25}
-                color={Themes.colors.buttons}
-              />
-            ) : (
-              <TouchableOpacity onPress={play}>
-                <AntDesign
-                  name="play"
-                  size={25}
-                  color={Themes.colors.buttons}
-                />
-              </TouchableOpacity>
-            )}
-          </TouchableOpacity>
-
-          <View
-            style={{
-              flexDirection: "column",
-              width: windowWidth * 0.4,
-              alignItems: "flex-start",
-            }}
-          >
-            <Text
-              style={{
-                color: Themes.colors.text,
-              }}
-              numberOfLines={1}
-            >
-              {params.title}
-            </Text>
-            <Text
-              style={{
-                color: Themes.colors.secondary,
-              }}
-              numberOfLines={1}
-            >
-              {params.artist}
-            </Text>
-          </View>
-
-          <Text
-            style={{
-              color: Themes.colors.text,
-              marginLeft: 25,
-            }}
-            numberOfLines={1}
-          >
-            {params.duration}
-          </Text>
-        </View>
+        <SongPreview
+          user={params.user}
+          preview={params.preview}
+          title={params.title}
+          artist={params.artist}
+          duration={params.duration}
+        />
 
         <View style={styles.caption}>
           <TextInput
@@ -170,16 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  songContainer: {
-    backgroundColor: Themes.colors.containers,
-    flexDirection: "row",
-    borderRadius: 25,
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.12,
-    padding: 8,
-  },
+
   image: {
     flexDirection: "column",
     backgroundColor: Themes.colors.containers,
@@ -188,8 +93,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignContent: "space-between",
     margin: 15,
-    width: windowWidth * 0.7,
-    height: windowWidth * 0.7,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.9,
   },
   text: {
     color: "white",
@@ -201,7 +106,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 25,
     padding: 15,
-    width: windowWidth * 0.7,
+    width: windowWidth * 0.9,
     height: windowWidth * 0.2,
     margin: 15,
   },
@@ -213,7 +118,7 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
     width: windowWidth * 0.3,
     height: windowWidth * 0.07,
-    margin: 40,
+    marginBottom: 50,
     backgroundColor: Themes.colors.buttons,
   },
 });
