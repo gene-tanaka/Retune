@@ -153,6 +153,21 @@ export const getPostsByUserId = async (userId) => {
   }
 };
 
+export const getPostsByUserIds = async (userIds) => {
+  try {
+    const { data, error } = await supabase
+      .from('Posts')
+      .select('*')
+      .in('user_id', userIds);
+
+    if (error) throw error;
+    return keysToCamel(data);
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
 export const getCommentsByPostId = async (postId) => {
   try {
     const { data, error } = await supabase
