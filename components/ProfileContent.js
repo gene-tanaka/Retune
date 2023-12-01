@@ -38,7 +38,7 @@ const windowWidth = Dimensions.get("window").width;
 //   );
 // };
 
-const ProfileContent = ({ userId }) => {
+const ProfileContent = ({ userId, handleBack }) => {
   const [profile, setProfile] = useState({});
   const [posts, setPosts] = useState([]);
   const [following, setFollowing] = useState([]);
@@ -95,6 +95,11 @@ const ProfileContent = ({ userId }) => {
       style={styles.container}
       contentContainerStyle={{ paddingBottom: 100 }}
     >
+      {handleBack && (
+        <TouchableOpacity style={styles.button} onPress={handleBack}>
+          <Text style={{ color: "white", fontSize: 18 }}>Back</Text>
+        </TouchableOpacity>
+      )}
       <View style={styles.usernameContainer}>
         <Text style={styles.username}>{"@" + profile.username}</Text>
       </View>

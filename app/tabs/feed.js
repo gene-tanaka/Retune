@@ -12,6 +12,7 @@ import styles from "../../styles";
 import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
 import { getAllUsers, getFollowingList, followUser } from "../api";
+import ProfileContent from "../../components/ProfileContent";
 
 export default function Page() {
   const { loggedInUserId } = useUser();
@@ -19,6 +20,8 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
+  const [viewingProfile, setViewingProfile] = useState(false); // State to control whether to view the profile or not
+  const [currentUserId, setCurrentUserId] = useState(null); // State to store the current user id
 
   const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
 
@@ -55,18 +58,20 @@ export default function Page() {
   };
 
   const handleFollow = async () => {
-    setExploreUserIndex(exploreUserIndex + 1);
     await followUser(loggedInUserId, exploreUsers[exploreUserIndex].id);
     setModalVisible(true);
   }
 
   const handleCloseModal = () => {
+    setExploreUserIndex(exploreUserIndex + 1);
     setModalVisible(false);
   };
 
   const handleViewProfile = () => {
     // Logic to view the profile
     // You might need to navigate to the profile screen or implement other logic here
+    setViewingProfile(true);
+    setCurrentUserId(exploreUsers[exploreUserIndex].id);
     handleCloseModal();
   };
 
@@ -74,6 +79,11 @@ export default function Page() {
     fetchFollowingUsers();
     setExploreUserIndex(0);
   };
+
+  const handleBack = () => {
+    setViewingProfile(false);
+    setCurrentUserId(null);
+  }
 
   const filteredUsers = allUsers.filter((user) => {
     const fullName = `${user.firstName || ""} ${
@@ -90,110 +100,119 @@ export default function Page() {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`;
   };
 
-  return (
-    <ImageBackground
-      source={require("../../assets/wavy.png")}
-      resizeMode="cover"
-      style={styles.background}
-    >
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Search by name or username"
-        placeholderTextColor={Themes.colors.secondary}
-        onChangeText={(text) => setSearchQuery(text)}
-        value={searchQuery}
-      />
+  const renderBody = () => {
+    if (viewingProfile && currentUserId) {
+      return (
+        <ProfileContent userId={currentUserId} handleBack={handleBack} />
+      )
+    } else {
+      return (
+        <ImageBackground
+          source={require("../../assets/wavy.png")}
+          resizeMode="cover"
+          style={styles.background}
+        >
+          <TextInput
+            style={styles.searchBar}
+            placeholder="Search by name or username"
+            placeholderTextColor={Themes.colors.secondary}
+            onChangeText={(text) => setSearchQuery(text)}
+            value={searchQuery}
+          />
 
-      {searchQuery ? (
-        <ScrollView style={styles.userList}>
-          {filteredUsers.map((user) => (
-            <View key={user.id} style={styles.searchListCard}>
-              <Text style={styles.searchListCardText}>{user.username}</Text>
-              <Text style={styles.searchListCardText}>
-                {user.firstName} {user.lastName}
+          {searchQuery ? (
+            <ScrollView style={styles.userList}>
+              {filteredUsers.map((user) => (
+                <View key={user.id} style={styles.searchListCard}>
+                  <Text style={styles.searchListCardText}>{user.username}</Text>
+                  <Text style={styles.searchListCardText}>
+                    {user.firstName} {user.lastName}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
+          ) : exploreUserIndex < exploreUsers.length ? (
+            <View>
+              <Text>
+                {"\n"}
+                {"\n"}
+                {"\n"}
+                {"\n"}
+                {"\n"}
+                {"\n"}
               </Text>
+              <View style={styles.exploreCard}>
+                <Text style={styles.username}>
+                  @{exploreUsers[exploreUserIndex].username}
+                </Text>
+                <Text style={styles.about}>
+                  About {exploreUsers[exploreUserIndex].firstName}{" "}
+                  {exploreUsers[exploreUserIndex].lastName}
+                </Text>
+                <View style={styles.profilePic}>
+                  <Text style={styles.initials}>
+                    {renderInitials(
+                      exploreUsers[exploreUserIndex].firstName,
+                      exploreUsers[exploreUserIndex].lastName
+                    )}
+                  </Text>
+                </View>
+                <Text style={styles.description}>
+                  {exploreUsers[exploreUserIndex].description}
+                </Text>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={handlePass}>
+                  <Text style={{ color: "white", fontSize: 18 }}>Pass</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.button} onPress={handleFollow}>
+                  <Text style={{ color: "white", fontSize: 18 }}>Follow</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          ))}
-        </ScrollView>
-      ) : exploreUserIndex < exploreUsers.length ? (
-        <View>
-          <Text>
-            {"\n"}
-            {"\n"}
-            {"\n"}
-            {"\n"}
-            {"\n"}
-            {"\n"}
-          </Text>
-          <View style={styles.exploreCard}>
-            <Text style={styles.username}>
-              @{exploreUsers[exploreUserIndex].username}
-            </Text>
-            <Text style={styles.about}>
-              About {exploreUsers[exploreUserIndex].firstName}{" "}
-              {exploreUsers[exploreUserIndex].lastName}
-            </Text>
-            <View style={styles.profilePic}>
-              <Text style={styles.initials}>
-                {renderInitials(
-                  exploreUsers[exploreUserIndex].firstName,
-                  exploreUsers[exploreUserIndex].lastName
-                )}
-              </Text>
+          ) : (
+            <View>
+              <View style={styles.exploreCard}>
+                <Text>
+                  No new users at the moment! Please try again later or refresh.
+                </Text>
+              </View>
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={handleRefresh}>
+                  <Text>Refresh</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <Text style={styles.description}>
-              {exploreUsers[exploreUserIndex].description}
-            </Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handlePass}>
-              <Text style={{ color: "white", fontSize: 18 }}>Pass</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleFollow}>
-              <Text style={{ color: "white", fontSize: 18 }}>Follow</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : (
-        <View>
-          <View style={styles.exploreCard}>
-            <Text>
-              No new users at the moment! Please try again later or refresh.
-            </Text>
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleRefresh}>
-              <Text>Refresh</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={handleCloseModal}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.modalHeader}>
-              <TouchableOpacity onPress={handleCloseModal}>
-                <Text>X</Text>
-              </TouchableOpacity>
-            </View>
+          )}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={handleCloseModal}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View style={styles.modalHeader}>
+                  <TouchableOpacity onPress={handleCloseModal}>
+                    <Text>X</Text>
+                  </TouchableOpacity>
+                </View>
 
-            <Text style={styles.modalText}>
-              Added user {exploreUsers[exploreUserIndex - 1]?.username}!
-            </Text>
+                <Text style={styles.modalText}>
+                  Added user {exploreUsers[exploreUserIndex - 1]?.username}!
+                </Text>
 
-            <View style={styles.modalFooter}>
-              <TouchableOpacity style={styles.button} onPress={handleViewProfile}>
-                <Text style={{ color: "white", fontSize: 12 }}>View Profile</Text>
-              </TouchableOpacity>
+                <View style={styles.modalFooter}>
+                  <TouchableOpacity style={styles.button} onPress={handleViewProfile}>
+                    <Text style={{ color: "white", fontSize: 12 }}>View Profile</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
-          </View>
-        </View>
-      </Modal>
-    </ImageBackground>
-  );
+          </Modal>
+        </ImageBackground>
+      )
+    }
+  }
+  return renderBody();
 }
