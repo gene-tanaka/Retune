@@ -25,11 +25,12 @@ export default function Page() {
     };
     fetchUsers();
   }, []);
+  const fetchFollowingUsers = async () => {
+    const response = await getFollowingList(loggedInUserId);
+    setFollowingUsers(response);
+  };
+
   useEffect(() => {
-    const fetchFollowingUsers = async () => {
-      const response = await getFollowingList(loggedInUserId);
-      setFollowingUsers(response);
-    };
     fetchFollowingUsers();
   }, []);
 
@@ -58,6 +59,7 @@ export default function Page() {
   }
 
   const handleRefresh = () => {
+    fetchFollowingUsers();
     setExploreUserIndex(0);
   };
 
