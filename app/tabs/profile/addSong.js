@@ -1,34 +1,20 @@
 import {
   StyleSheet,
   Text,
-  View,
   SafeAreaView,
   Dimensions,
   TextInput,
-  Image,
   FlatList,
-  Button,
-  Pressable,
   ScrollView,
   ImageBackground,
 } from "react-native";
 import { useState } from "react";
-import {
-  Link,
-  Stack,
-  router,
-  useGlobalSearchParams,
-  useLocalSearchParams,
-  useRouter,
-} from "expo-router";
-import {
-  useSpotifyAuth,
-  useSpotifyTracks,
-  millisToMinutesAndSeconds,
-} from "../../../utils";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useSpotifyTracks, millisToMinutesAndSeconds } from "../../../utils";
 import { Themes } from "../../../assets/Themes";
+import { updateUser } from "../../api";
+import { useUser } from "../../../contexts/UserContext";
 import Song from "../../../components/Song";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -37,33 +23,35 @@ export default function Page() {
   const [tracks, setTracks] = useState([]);
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState("");
+  const { loggedInUserId } = useUser();
   const params = useLocalSearchParams();
-  const image = params.image;
   const type = params.type;
   const router = useRouter();
   useSpotifyTracks(query, token, setTracks);
 
-  const handleItemPress = (item) => {
+  const handleItemPress = async (item) => {
     let artists = item.songArtists
       .map((item) => item.name)
       .join([(separator = ", ")]);
     let title = item.songTitle.replaceAll(")", " ").replaceAll("(", "- ");
     let album = item.albumName.replaceAll(")", " ").replaceAll("(", "- ");
+    const song = JSON.stringify({
+      image: params.image,
+      albumURL: item?.imageUrl,
+      title: title,
+      artist: artists,
+      name: album,
+      duration: millisToMinutesAndSeconds(item?.duration),
+      preview: item?.previewUrl,
+      type: type,
+    });
+    await updateUser(loggedInUserId, { favoriteSong: song });
     router.push({
-      pathname: "/tabs/post/caption",
-      params: {
-        user: params.user,
-        image: params.image,
-        albumURL: item?.imageUrl,
-        title: title,
-        artist: artists,
-        name: album,
-        duration: millisToMinutesAndSeconds(item?.duration),
-        preview: item?.previewUrl,
-        type: type,
-      },
+      pathname: "/tabs/profile/",
+      params: { success: "true" },
     });
   };
+
   const renderSong = ({ item }) => {
     if (item !== null) {
       let artists = item.songArtists
@@ -97,8 +85,8 @@ export default function Page() {
     >
       <SafeAreaView>
         <Text style={styles.text}>
-          {"\n"}Choose a song to accompany your post!{"\n"}Browse your top songs
-          or search for one:
+          {"\n"}Choose a song to display on your profile!{"\n"}
+          Browse your top songs or search for one:
         </Text>
         <ScrollView keyboardShouldPersistTaps="handled">
           <TextInput

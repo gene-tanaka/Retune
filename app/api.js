@@ -2,8 +2,6 @@ import supabase from "../supabase";
 import _ from "lodash";
 import { decode } from "base64-arraybuffer";
 import * as FileSystem from "expo-file-system";
-import { FileObject } from "@supabase/storage-js";
-import { useUser } from "../contexts/UserContext";
 
 const keysToCamel = (object) => {
   if (_.isArray(object)) {

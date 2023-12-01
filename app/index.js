@@ -1,8 +1,24 @@
-import { Pressable, Image, Text, StyleSheet, View } from "react-native";
+import {
+  Pressable,
+  Image,
+  Text,
+  StyleSheet,
+  View,
+  StatusBar,
+  SafeAreaView,
+} from "react-native";
 import { router } from "expo-router";
 import { useSpotifyAuth } from "../utils";
 import { useEffect } from "react";
 import { Themes } from "../assets/Themes";
+
+const MyStatusBar = ({ backgroundColor, ...props }) => (
+  <View style={[styles.statusBar, { backgroundColor }]}>
+    <SafeAreaView>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </SafeAreaView>
+  </View>
+);
 
 export default function Page() {
   const { token, getSpotifyAuth } = useSpotifyAuth();
@@ -15,6 +31,7 @@ export default function Page() {
 
   return (
     <View style={styles.container}>
+      <MyStatusBar barStyle="light-content" />
       <Text style={styles.title}>Welcome to Retune!</Text>
       <Pressable onPress={() => getSpotifyAuth()} style={styles.button}>
         <Image
