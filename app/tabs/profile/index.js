@@ -23,22 +23,22 @@ import {
   getUsersByIds,
 } from "../../api";
 
-const MyPost = ({ post, username, profilePic }) => {
-  return (
-    <Post
-      key={post.id}
-      user={"@" + username}
-      image={post.imageUrl}
-      caption={post.caption}
-      preview={post.preview}
-      title={post.title}
-      artist={post.artist}
-      duration={post.duration}
-      timestamp={post.timestamp}
-      profile={profilePic}
-    />
-  );
-};
+// const MyPost = ({ post, username, profilePic }) => {
+//   return (
+//     <Post
+// key={post.id}
+// user={"@" + username}
+// image={post.imageUrl}
+// caption={post.caption}
+// preview={post.preview}
+// title={post.title}
+// artist={post.artist}
+// duration={post.duration}
+// timestamp={post.timestamp}
+// profile={profilePic}
+//     />
+//   );
+// };
 const windowWidth = Dimensions.get("window").width;
 
 export default function ProfilePage() {
@@ -70,8 +70,29 @@ export default function ProfilePage() {
   };
   useEffect(() => {
     fetchInfo();
-  }, [params]);
-  console.log(profile);
+  }, []);
+
+  if (!profile) {
+    return (
+      <View>
+        <Text>Nothing available</Text>
+      </View>
+    );
+  }
+  // const testing = posts.map((post) => (
+  //   <Post
+  //     key={post.id}
+  //     user={"@" + profile.username}
+  //     caption={post.caption}
+  //     preview={post.preview}
+  //     title={post.title}
+  //     artist={post.artist}
+  //     duration={post.duration}
+  //     timestamp={post.timestamp}
+  //     profile={profile.profilePic}
+  //   />
+  // ));
+  // console.log(testing);
 
   return (
     <ScrollView
@@ -172,17 +193,7 @@ export default function ProfilePage() {
       <View style={styles.postHeader}>
         <Text style={styles.headerText}>My Posts</Text>
       </View>
-      <View>
-        {posts &&
-          posts.map((post) => (
-            <MyPost
-              key={post.id}
-              post={post}
-              username={profile.username}
-              profilePic={profile.profilePic}
-            />
-          ))}
-      </View>
+      <View>{}</View>
     </ScrollView>
   );
 }
