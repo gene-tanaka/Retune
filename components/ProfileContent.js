@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import SongPreview from './SongPreview';
 import { Themes } from '../assets/Themes';
+
+const windowWidth = Dimensions.get("window").width;
 
 const ProfileContent = ({ profile, posts, followers, following, favoriteSong, router, uri_prefix }) => {
   return (
@@ -104,15 +106,7 @@ const ProfileContent = ({ profile, posts, followers, following, favoriteSong, ro
         <Text style={styles.headerText}>My Posts</Text>
       </View>
       <View>
-        {posts &&
-          posts.map((post) => (
-            <MyPost
-              key={post.id}
-              post={post}
-              username={profile.username}
-              profilePic={profile.profilePic}
-            />
-          ))}
+        {}
       </View>
     </ScrollView>
   );

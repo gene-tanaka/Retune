@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   Text,
   View,
-  Dimensions,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
-import Song from "../../../components/Song";
-import Post from "../../../components/Post";
-import { Themes } from "../../../assets/Themes";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useUser } from "../../../contexts/UserContext";
-import SongPreview from "../../../components/SongPreview";
 
 import {
   getFollowingList,
@@ -37,7 +30,6 @@ import ProfileContent from "../../../components/ProfileContent";
 //     />
 //   );
 // };
-const windowWidth = Dimensions.get("window").width;
 
 export default function ProfilePage() {
   const { loggedInUserId } = useUser();
