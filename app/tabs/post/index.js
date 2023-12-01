@@ -10,24 +10,28 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
-import { Link, Stack, useGlobalSearchParams, router } from "expo-router";
-import { useState } from "react";
+import { router } from "expo-router";
+import { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Themes } from "../../../assets/Themes";
+import { Ionicons } from "@expo/vector-icons";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
 export default function Page() {
   const [image, setImage] = useState(null);
+  const [type, setType] = useState(null);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
+      allowsEditing: true,
     });
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      const response = result.assets[0];
+      setImage(response.uri);
+      setType(response.type);
     }
   };
   let shown = null;
@@ -52,14 +56,44 @@ export default function Page() {
         {image && <Image source={{ uri: image }} style={styles.image} />}
         {shown}
       </View>
+      <View
+        style={{
+          position: "absolute",
+          paddingLeft: 335,
+          paddingBottom: 400,
+          marginRight: -30,
+        }}
+      >
+        {image && (
+          <View
+            style={{
+              position: "absolute",
+              width: 30,
+              height: 30,
+              top: 7.5,
+              left: 339,
+              borderRadius: 25,
+              backgroundColor: "white",
+            }}
+          />
+        )}
+        <Pressable onPress={() => setImage(null)}>
+          {image ? (
+            <Ionicons name="close-circle" size={40} color="red" />
+          ) : null}
+        </Pressable>
+      </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
+        onPress={() => {
+          const params = { image: image, type: type };
+          setImage(null);
+          setType(null);
           router.push({
             pathname: "/tabs/post/search",
-            params: { image: image, user: "user" },
-          })
-        }
+            params: params,
+          });
+        }}
       >
         <Text style={styles.text}>Next</Text>
       </TouchableOpacity>

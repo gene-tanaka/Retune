@@ -37,7 +37,7 @@ export default function HomeLayout() {
           options={{
             title: "Home",
             tabBarLabel: "Home",
-
+            headerShown: true,
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="home" size={30} color={color} />
             ),
