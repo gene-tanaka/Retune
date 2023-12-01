@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   ImageBackground,
+  Modal,
 } from "react-native";
 import styles from "../../styles";
 import { useUser } from "../../contexts/UserContext";
@@ -18,6 +19,9 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
+
+  const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
+
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await getAllUsers();
@@ -55,8 +59,18 @@ export default function Page() {
   const handleFollow = async () => {
     setExploreUserIndex(exploreUserIndex + 1);
     await followUser(loggedInUserId, exploreUsers[exploreUserIndex].id);
-
+    setModalVisible(true); // Open the Modal
   }
+
+  const handleCloseModal = () => {
+    setModalVisible(false); // Function to close the Modal
+  };
+
+  const handleViewProfile = () => {
+    // Logic to view the profile
+    // You might need to navigate to the profile screen or implement other logic here
+    handleCloseModal();
+  };
 
   const handleRefresh = () => {
     fetchFollowingUsers();
@@ -156,6 +170,32 @@ export default function Page() {
           </View>
         </View>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.modalHeader}>
+              <TouchableOpacity onPress={handleCloseModal}>
+                <Text>X</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.modalText}>
+              Added user {exploreUsers[exploreUserIndex - 1]?.username}!
+            </Text>
+
+            <View style={styles.modalFooter}>
+              <TouchableOpacity style={styles.button} onPress={handleViewProfile}>
+                <Text style={{ color: "white", fontSize: 12 }}>View Profile</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ImageBackground>
   );
 }
