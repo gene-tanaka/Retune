@@ -68,8 +68,6 @@ export default function Page() {
   };
 
   const handleViewProfileFromModal = () => {
-    // Logic to view the profile
-    // You might need to navigate to the profile screen or implement other logic here
     setViewingProfile(true);
     setCurrentUserId(exploreUsers[exploreUserIndex].id);
     handleCloseModal();
@@ -148,26 +146,28 @@ export default function Page() {
                 {"\n"}
                 {"\n"}
               </Text>
-              <View style={styles.exploreCard}>
-                <Text style={styles.username}>
-                  @{exploreUsers[exploreUserIndex].username}
-                </Text>
-                <Text style={styles.about}>
-                  About {exploreUsers[exploreUserIndex].firstName}{" "}
-                  {exploreUsers[exploreUserIndex].lastName}
-                </Text>
-                <View style={styles.profilePic}>
-                  <Text style={styles.initials}>
-                    {renderInitials(
-                      exploreUsers[exploreUserIndex].firstName,
-                      exploreUsers[exploreUserIndex].lastName
-                    )}
+              <TouchableOpacity onPress={() => handleViewSearchedUserProfile(exploreUsers[exploreUserIndex].id)}>
+                <View style={styles.exploreCard}>
+                  <Text style={styles.username}>
+                    @{exploreUsers[exploreUserIndex].username}
+                  </Text>
+                  <Text style={styles.about}>
+                    About {exploreUsers[exploreUserIndex].firstName}{" "}
+                    {exploreUsers[exploreUserIndex].lastName}
+                  </Text>
+                  <View style={styles.profilePic}>
+                    <Text style={styles.initials}>
+                      {renderInitials(
+                        exploreUsers[exploreUserIndex].firstName,
+                        exploreUsers[exploreUserIndex].lastName
+                      )}
+                    </Text>
+                  </View>
+                  <Text style={styles.description}>
+                    {exploreUsers[exploreUserIndex].description}
                   </Text>
                 </View>
-                <Text style={styles.description}>
-                  {exploreUsers[exploreUserIndex].description}
-                </Text>
-              </View>
+              </TouchableOpacity>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={handlePass}>
                   <Text style={{ color: "white", fontSize: 18 }}>Pass</Text>
