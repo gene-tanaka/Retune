@@ -22,19 +22,17 @@ export default function Page() {
 
   const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
 
+
+  const fetchFollowingUsers = async () => {
+    const response = await getFollowingList(loggedInUserId);
+    setFollowingUsers(response);
+  };
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await getAllUsers();
       setAllUsers(response);
     };
     fetchUsers();
-  }, []);
-  const fetchFollowingUsers = async () => {
-    const response = await getFollowingList(loggedInUserId);
-    setFollowingUsers(response);
-  };
-
-  useEffect(() => {
     fetchFollowingUsers();
   }, []);
 
@@ -59,11 +57,11 @@ export default function Page() {
   const handleFollow = async () => {
     setExploreUserIndex(exploreUserIndex + 1);
     await followUser(loggedInUserId, exploreUsers[exploreUserIndex].id);
-    setModalVisible(true); // Open the Modal
+    setModalVisible(true);
   }
 
   const handleCloseModal = () => {
-    setModalVisible(false); // Function to close the Modal
+    setModalVisible(false);
   };
 
   const handleViewProfile = () => {
@@ -101,7 +99,7 @@ export default function Page() {
       <TextInput
         style={styles.searchBar}
         placeholder="Search by name or username"
-        placeholderTextColor={Themes.colors.secondary} // Light gray
+        placeholderTextColor={Themes.colors.secondary}
         onChangeText={(text) => setSearchQuery(text)}
         value={searchQuery}
       />
