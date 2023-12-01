@@ -80,6 +80,7 @@ export default function Page() {
             router.replace("tabs/post");
             router.push({
               pathname: "tabs/",
+              params: { success: "true" },
             });
           }}
         >

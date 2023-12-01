@@ -73,6 +73,8 @@ export default function HomeLayout() {
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="person-circle-outline" size={30} color={color} />
             ),
+            // headerShown: true,
+            headerShown: false,
           }}
         />
       </Tabs>

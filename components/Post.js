@@ -62,7 +62,7 @@ const Post = ({
       <View
         style={{
           alignItems: "center",
-          backgroundColor: "darkgray",
+          backgroundColor: "black",
           paddingTop: 5,
           borderRadius: 27,
         }}
@@ -74,15 +74,6 @@ const Post = ({
               style={styles.profilePicture}
             />
             <Button titleStyle={{ fontSize: 18 }} color="white" title={user} />
-            <Text
-              style={{
-                color: "white",
-                fontSize: 15,
-                marginLeft: 60,
-              }}
-            >
-              {formatDate(timestamp) + ", " + formatTime(timestamp)}
-            </Text>
           </View>
         </View>
         <Image source={{ uri: uri }} style={styles.image} />
@@ -111,6 +102,20 @@ const Post = ({
             {caption}
           </Text>
         </View>
+        <View style={{ marginLeft: -60, marginBottom: 5 }}>
+          <Text
+            style={{
+              color: "white",
+              fontSize: 15,
+              marginLeft: 60,
+            }}
+          >
+            {"Posted on " +
+              formatDate(timestamp) +
+              ", " +
+              formatTime(timestamp)}
+          </Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -127,7 +132,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   commentBar: {
-    backgroundColor: Themes.colors.containers,
+    // backgroundColor: Themes.colors.containers,
+    backgroundColor: "black",
     flexDirection: "row",
     width: windowWidth * 0.27,
     borderRadius: 25,
@@ -138,7 +144,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   userContainer: {
-    backgroundColor: Themes.colors.containers,
+    // backgroundColor: Themes.colors.containers,
+    backgroundColor: "black",
     flexDirection: "row",
     borderRadius: 25,
     padding: 5,
@@ -176,6 +183,7 @@ const styles = StyleSheet.create({
   },
   caption: {
     backgroundColor: Themes.colors.containers,
+    // backgroundColor: "black",
     flexDirection: "row",
     borderRadius: 25,
     justifyContent: "flex-start",
