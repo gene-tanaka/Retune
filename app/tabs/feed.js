@@ -10,31 +10,58 @@ import {
 import styles from "../../styles";
 import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
-import { getAllUsers } from "../api";
+import { getAllUsers, getFollowingList, followUser } from "../api";
 
 export default function Page() {
   const { loggedInUserId } = useUser();
   const [exploreUserIndex, setExploreUserIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [followingUsers, setFollowingUsers] = useState([]);
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await getAllUsers();
-      setUsers(response);
+      setAllUsers(response);
     };
     fetchUsers();
   }, []);
-  const exploreUsers = users.filter((user) => user.id !== loggedInUserId);
+  useEffect(() => {
+    const fetchFollowingUsers = async () => {
+      const response = await getFollowingList(loggedInUserId);
+      setFollowingUsers(response);
+    };
+    fetchFollowingUsers();
+  }, []);
+
+  const exploreUsers = allUsers.filter((user) => {
+    // Exclude the current user
+    if (user.id === loggedInUserId) {
+      return false;
+    }
+    // Check if the user is already being followed
+    const isFollowing = followingUsers.some(followingUser => {
+      return followingUser.id === user.id
+    });
+
+    // Include the user in exploreUsers if not already being followed
+    return !isFollowing;
+  });
 
   const handlePass = () => {
     setExploreUserIndex(exploreUserIndex + 1);
   };
 
+  const handleFollow = async () => {
+    setExploreUserIndex(exploreUserIndex + 1);
+    await followUser(loggedInUserId, exploreUsers[exploreUserIndex].id);
+
+  }
+
   const handleRefresh = () => {
     setExploreUserIndex(0);
   };
 
-  const filteredUsers = exploreUsers.filter((user) => {
+  const filteredUsers = allUsers.filter((user) => {
     const fullName = `${user.firstName || ""} ${
       user.lastName || ""
     }`.toLowerCase();
@@ -108,7 +135,7 @@ export default function Page() {
             <TouchableOpacity style={styles.button} onPress={handlePass}>
               <Text style={{ color: "white", fontSize: 18 }}>Pass</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <TouchableOpacity style={styles.button} onPress={handleFollow}>
               <Text style={{ color: "white", fontSize: 18 }}>Follow</Text>
             </TouchableOpacity>
           </View>

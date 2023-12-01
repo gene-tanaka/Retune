@@ -1,4 +1,4 @@
-import { Tabs, Stack, useLocalSearchParams } from "expo-router";
+import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Themes } from "../../assets/Themes";
 import { UserProvider } from "../../contexts/UserContext";
