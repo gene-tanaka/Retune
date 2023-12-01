@@ -1,9 +1,95 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
-import SongPreview from './SongPreview';
-import { Themes } from '../assets/Themes';
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+} from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const ProfileContent = ({ profile, posts, followers, following, favoriteSong, router, uri_prefix }) => {
+import {
+  getFollowingList,
+  getFollowerList,
+  getPostsByUserId,
+  getUsersByIds,
+} from "../app/api";
+import SongPreview from "./SongPreview";
+import { Themes } from "../assets/Themes";
+
+const windowWidth = Dimensions.get("window").width;
+
+// const MyPost = ({ post, username, profilePic }) => {
+//   return (
+//     <Post
+// key={post.id}
+// user={"@" + username}
+// image={post.imageUrl}
+// caption={post.caption}
+// preview={post.preview}
+// title={post.title}
+// artist={post.artist}
+// duration={post.duration}
+// timestamp={post.timestamp}
+// profile={profilePic}
+//     />
+//   );
+// };
+
+const ProfileContent = ({ userId }) => {
+  const [profile, setProfile] = useState({});
+  const [posts, setPosts] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [favoriteSong, setFavoriteSong] = useState(null);
+  const router = useRouter();
+  const params = useLocalSearchParams();
+
+  const uri_prefix =
+    "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/";
+
+  const fetchInfo = async () => {
+    const profile = await getUsersByIds([userId]);
+    setProfile(profile[0]);
+    const fetchFollowing = await getFollowingList(userId);
+    const fetchFollowers = await getFollowerList(userId);
+    setFollowing(fetchFollowing);
+    setFollowers(fetchFollowers);
+    const fetchedPosts = await getPostsByUserId(userId);
+    const sortedPosts = fetchedPosts.sort((a, b) => {
+      return new Date(b.timestamp) - new Date(a.timestamp);
+    });
+    setPosts(sortedPosts);
+    setFavoriteSong(JSON.parse(profile[0].favoriteSong));
+  };
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+
+    // const testing = posts.map((post) => (
+  //   <Post
+  //     key={post.id}
+  //     user={"@" + profile.username}
+  //     caption={post.caption}
+  //     preview={post.preview}
+  //     title={post.title}
+  //     artist={post.artist}
+  //     duration={post.duration}
+  //     timestamp={post.timestamp}
+  //     profile={profile.profilePic}
+  //   />
+  // ));
+  // console.log(testing);
+
+  if (!profile) {
+    return (
+      <View>
+        <Text>Nothing available</Text>
+      </View>
+    );
+  }
   return (
     <ScrollView
       style={styles.container}
@@ -104,15 +190,7 @@ const ProfileContent = ({ profile, posts, followers, following, favoriteSong, ro
         <Text style={styles.headerText}>My Posts</Text>
       </View>
       <View>
-        {posts &&
-          posts.map((post) => (
-            <MyPost
-              key={post.id}
-              post={post}
-              username={profile.username}
-              profilePic={profile.profilePic}
-            />
-          ))}
+        {}
       </View>
     </ScrollView>
   );
