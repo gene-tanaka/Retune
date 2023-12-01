@@ -6,35 +6,76 @@ import {
   TextInput,
   ScrollView,
   ImageBackground,
+  Modal,
 } from "react-native";
 import styles from "../../styles";
 import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
-import { getAllUsers } from "../api";
+import { getAllUsers, getFollowingList, followUser } from "../api";
 
 export default function Page() {
   const { loggedInUserId } = useUser();
   const [exploreUserIndex, setExploreUserIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [followingUsers, setFollowingUsers] = useState([]);
+
+  const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
+
+
+  const fetchFollowingUsers = async () => {
+    const response = await getFollowingList(loggedInUserId);
+    setFollowingUsers(response);
+  };
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await getAllUsers();
-      setUsers(response);
+      setAllUsers(response);
     };
     fetchUsers();
+    fetchFollowingUsers();
   }, []);
-  const exploreUsers = users.filter((user) => user.id !== loggedInUserId);
+
+  const exploreUsers = allUsers.filter((user) => {
+    // Exclude the current user
+    if (user.id === loggedInUserId) {
+      return false;
+    }
+    // Check if the user is already being followed
+    const isFollowing = followingUsers.some(followingUser => {
+      return followingUser.id === user.id
+    });
+
+    // Include the user in exploreUsers if not already being followed
+    return !isFollowing;
+  });
 
   const handlePass = () => {
     setExploreUserIndex(exploreUserIndex + 1);
   };
 
+  const handleFollow = async () => {
+    setExploreUserIndex(exploreUserIndex + 1);
+    await followUser(loggedInUserId, exploreUsers[exploreUserIndex].id);
+    setModalVisible(true);
+  }
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  const handleViewProfile = () => {
+    // Logic to view the profile
+    // You might need to navigate to the profile screen or implement other logic here
+    handleCloseModal();
+  };
+
   const handleRefresh = () => {
+    fetchFollowingUsers();
     setExploreUserIndex(0);
   };
 
-  const filteredUsers = exploreUsers.filter((user) => {
+  const filteredUsers = allUsers.filter((user) => {
     const fullName = `${user.firstName || ""} ${
       user.lastName || ""
     }`.toLowerCase();
@@ -58,7 +99,7 @@ export default function Page() {
       <TextInput
         style={styles.searchBar}
         placeholder="Search by name or username"
-        placeholderTextColor={Themes.colors.secondary} // Light gray
+        placeholderTextColor={Themes.colors.secondary}
         onChangeText={(text) => setSearchQuery(text)}
         value={searchQuery}
       />
@@ -108,7 +149,7 @@ export default function Page() {
             <TouchableOpacity style={styles.button} onPress={handlePass}>
               <Text style={{ color: "white", fontSize: 18 }}>Pass</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {}}>
+            <TouchableOpacity style={styles.button} onPress={handleFollow}>
               <Text style={{ color: "white", fontSize: 18 }}>Follow</Text>
             </TouchableOpacity>
           </View>
@@ -127,6 +168,32 @@ export default function Page() {
           </View>
         </View>
       )}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={handleCloseModal}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.modalHeader}>
+              <TouchableOpacity onPress={handleCloseModal}>
+                <Text>X</Text>
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.modalText}>
+              Added user {exploreUsers[exploreUserIndex - 1]?.username}!
+            </Text>
+
+            <View style={styles.modalFooter}>
+              <TouchableOpacity style={styles.button} onPress={handleViewProfile}>
+                <Text style={{ color: "white", fontSize: 12 }}>View Profile</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ImageBackground>
   );
 }

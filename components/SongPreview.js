@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Themes } from "../assets/Themes";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -7,10 +7,9 @@ import { useState } from "react";
 
 const windowWidth = Dimensions.get("window").width;
 
-const SongPreview = ({ user, preview, title, artist, duration }) => {
+const SongPreview = ({ preview, title, artist, duration }) => {
   const [currentSound, setCurrentSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-
   const play = async () => {
     try {
       await Audio.setAudioModeAsync({
@@ -108,6 +107,7 @@ const styles = StyleSheet.create({
   },
   songContainer: {
     backgroundColor: Themes.colors.containers,
+    // backgroundColor: "black",
     flexDirection: "row",
     borderRadius: 25,
     justifyContent: "space-evenly",

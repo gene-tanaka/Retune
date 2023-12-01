@@ -2,8 +2,6 @@ import supabase from "../supabase";
 import _ from "lodash";
 import { decode } from "base64-arraybuffer";
 import * as FileSystem from "expo-file-system";
-import { FileObject } from "@supabase/storage-js";
-import { useUser } from "../contexts/UserContext";
 
 const keysToCamel = (object) => {
   if (_.isArray(object)) {
@@ -28,7 +26,7 @@ export const getFollowerList = async (userId) => {
     const { data, error } = await supabase
       .from("UserFollowers")
       .select(
-        "Users!UserFollowers_followee_id_fkey(id, username, first_name, last_name, description)"
+        "Users!UserFollowers_follower_id_fkey(id, username, first_name, last_name, description)"
       )
       .eq("followee_id", userId);
 
@@ -45,7 +43,7 @@ export const getFollowingList = async (userId) => {
     const { data, error } = await supabase
       .from("UserFollowers")
       .select(
-        "Users!UserFollowers_follower_id_fkey(id, username, first_name, last_name, description)"
+        "Users!UserFollowers_followee_id_fkey(id, username, first_name, last_name, description)"
       )
       .eq("follower_id", userId);
 

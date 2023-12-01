@@ -1,9 +1,7 @@
 import {
   StyleSheet,
-  Text,
   View,
-  ScrollView,
-  Image,
+  StatusBar,
   SafeAreaView,
   FlatList,
   ActivityIndicator,
@@ -12,6 +10,7 @@ import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
 import { getFollowingListIDs, getPostsByUserIds, getUsersByIds } from "../api";
 import Post from "../../components/Post";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 const MyPost = ({ data, usernames }) => {
   const post = data.item;
@@ -31,12 +30,20 @@ const MyPost = ({ data, usernames }) => {
   );
 };
 
+const MyStatusBar = ({ backgroundColor, ...props }) => (
+  <View style={[styles.statusBar, { backgroundColor }]}>
+    <SafeAreaView>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </SafeAreaView>
+  </View>
+);
+
 export default function Page() {
   const { loggedInUserId } = useUser();
   const [following, setFollowing] = useState([loggedInUserId]);
   const [posts, setPosts] = useState([]);
-  const [usernames, setUsernames] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [usernames, setUsernames] = useState({});
+  const params = useLocalSearchParams();
 
   const fetchFollowing = async () => {
     try {
@@ -58,33 +65,23 @@ export default function Page() {
       }
     } catch (error) {
       console.error("Error loading posts: ", error);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchFollowing();
-
-    const intervalId = setInterval(fetchFollowing, 3000); // Poll every 2 seconds
-    return () => clearInterval(intervalId); // Cleanup on unmount
-  }, []);
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
+  }, [params]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={posts}
-        renderItem={(data) => <MyPost data={data} usernames={usernames} />}
-        contentContainerStyle={{ paddingBottom: 45, paddingTop: 30 }}
-      />
+      <MyStatusBar barStyle="light-content" />
+      {usernames && posts && (
+        <FlatList
+          data={posts}
+          renderItem={(data) => <MyPost data={data} usernames={usernames} />}
+          contentContainerStyle={{ paddingBottom: 45, paddingTop: 30 }}
+        />
+      )}
     </SafeAreaView>
   );
 }

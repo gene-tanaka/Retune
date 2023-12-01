@@ -1,4 +1,4 @@
-import { Tabs, Stack, useLocalSearchParams } from "expo-router";
+import { Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Themes } from "../../assets/Themes";
 import { UserProvider } from "../../contexts/UserContext";
@@ -73,6 +73,8 @@ export default function HomeLayout() {
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="person-circle-outline" size={30} color={color} />
             ),
+            // headerShown: true,
+            headerShown: false,
           }}
         />
       </Tabs>
