@@ -67,13 +67,18 @@ export default function Page() {
     setModalVisible(false);
   };
 
-  const handleViewProfile = () => {
+  const handleViewProfileFromModal = () => {
     // Logic to view the profile
     // You might need to navigate to the profile screen or implement other logic here
     setViewingProfile(true);
     setCurrentUserId(exploreUsers[exploreUserIndex].id);
     handleCloseModal();
   };
+
+  const handleViewSearchedUserProfile = (userId) => {
+    setViewingProfile(true);
+    setCurrentUserId(userId);
+  }
 
   const handleRefresh = () => {
     fetchFollowingUsers();
@@ -123,12 +128,14 @@ export default function Page() {
           {searchQuery ? (
             <ScrollView style={styles.userList}>
               {filteredUsers.map((user) => (
-                <View key={user.id} style={styles.searchListCard}>
-                  <Text style={styles.searchListCardText}>{user.username}</Text>
-                  <Text style={styles.searchListCardText}>
-                    {user.firstName} {user.lastName}
-                  </Text>
-                </View>
+                <TouchableOpacity key={user.id} onPress={() => handleViewSearchedUserProfile(user.id)}>
+                  <View key={user.id} style={styles.searchListCard}>
+                    <Text style={styles.searchListCardText}>{user.username}</Text>
+                    <Text style={styles.searchListCardText}>
+                      {user.firstName} {user.lastName}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               ))}
             </ScrollView>
           ) : exploreUserIndex < exploreUsers.length ? (
@@ -203,7 +210,7 @@ export default function Page() {
                 </Text>
 
                 <View style={styles.modalFooter}>
-                  <TouchableOpacity style={styles.button} onPress={handleViewProfile}>
+                  <TouchableOpacity style={styles.button} onPress={handleViewProfileFromModal}>
                     <Text style={{ color: "white", fontSize: 12 }}>View Profile</Text>
                   </TouchableOpacity>
                 </View>
