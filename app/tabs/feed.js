@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -17,7 +17,7 @@ export default function Page() {
   const [exploreUserIndex, setExploreUserIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchUsers = async () => {
       const response = await getAllUsers();
       setUsers(response);
