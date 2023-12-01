@@ -103,7 +103,17 @@ const ProfileContent = ({ profile, posts, followers, following, favoriteSong, ro
       <View style={styles.postHeader}>
         <Text style={styles.headerText}>My Posts</Text>
       </View>
-      <View>{}</View>
+      <View>
+        {posts &&
+          posts.map((post) => (
+            <MyPost
+              key={post.id}
+              post={post}
+              username={profile.username}
+              profilePic={profile.profilePic}
+            />
+          ))}
+      </View>
     </ScrollView>
   );
 };
