@@ -16,11 +16,13 @@ import { Themes } from "../assets/Themes";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SongPreview from "../components/SongPreview";
 import { FontAwesome } from "@expo/vector-icons";
+import ProfileContent from "./ProfileContent";
 
 const windowWidth = Dimensions.get("window").width;
 
 const Post = ({
-  user,
+  userId,
+  username,
   imageUrl,
   caption,
   preview,
@@ -38,6 +40,7 @@ const Post = ({
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
     profile;
 
+  const [viewingProfile, setViewingProfile] = useState(false);
   const formatDate = (dateString) => {
     const options = { month: "short", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -57,6 +60,11 @@ const Post = ({
     }
   }
 
+  if (viewingProfile) {
+    return (
+      <ProfileContent userId={userId} handleBack={() => setViewingProfile(false)} />
+    )
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View
@@ -73,12 +81,12 @@ const Post = ({
               source={{ uri: profile_uri }}
               style={styles.profilePicture}
             />
-            <Button titleStyle={{ fontSize: 18 }} color="white" title={user} />
+            <Button titleStyle={{ fontSize: 18 }} color="white" title={username || "Unknown User"} onPress={() => setViewingProfile(true)} />
           </View>
         </View>
         <Image source={{ uri: uri }} style={styles.image} />
         <SongPreview
-          user={user}
+          user={username}
           preview={preview}
           title={title}
           artist={artist}
