@@ -44,7 +44,7 @@ export default function HomeLayout() {
           }}
         />
         <Tabs.Screen
-          name="feed"
+          name="explore"
           options={{
             title: "Explore",
             tabBarLabel: "Explore",
