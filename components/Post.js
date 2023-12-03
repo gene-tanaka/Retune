@@ -22,7 +22,7 @@ const windowWidth = Dimensions.get("window").width;
 
 const Post = ({
   userId,
-  username,
+  user,
   imageUrl,
   caption,
   preview,
@@ -81,12 +81,12 @@ const Post = ({
               source={{ uri: profile_uri }}
               style={styles.profilePicture}
             />
-            <Button titleStyle={{ fontSize: 18 }} color="white" title={username || "Unknown User"} onPress={() => setViewingProfile(true)} />
+            <Button titleStyle={{ fontSize: 18 }} color="white" title={user} onPress={() => setViewingProfile(true)} />
           </View>
         </View>
         <Image source={{ uri: uri }} style={styles.image} />
         <SongPreview
-          user={username}
+          user={user}
           preview={preview}
           title={title}
           artist={artist}
