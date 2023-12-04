@@ -22,6 +22,36 @@ export default function ProfileLayout() {
           headerTintColor: "#848487",
         }}
       />
+      <Stack.Screen
+        name="showFollowers"
+        options={{
+          title: "Followers",
+          headerShown: true,
+          headerStyle: { backgroundColor: "black" },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "#848487",
+        }}
+      />
+      <Stack.Screen
+        name="showFollowing"
+        options={{
+          title: "Following",
+          headerShown: true,
+          headerStyle: { backgroundColor: "black" },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "#848487",
+        }}
+      />
+      <Stack.Screen
+        name="showProfile"
+        options={{
+          title: "View Profile",
+          headerShown: true,
+          headerStyle: { backgroundColor: "black" },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "#848487",
+        }}
+      />
     </Stack>
   );
 }
