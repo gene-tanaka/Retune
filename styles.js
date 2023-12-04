@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.9,
   },
   searchListCard: {
-    backgroundColor: Themes.colors.containers2,
+    backgroundColor: "black",
     justifyContent: "center",
     borderRadius: 10,
     padding: 10,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   exploreCard: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Themes.colors.containers,
+    backgroundColor: "black",
     borderRadius: 20,
     padding: 20,
     shadowColor: "#000",
@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 3,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.6,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22
+    marginTop: 22,
   },
   modalView: {
     margin: 20,
@@ -109,23 +111,23 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
   },
   modalHeader: {
-    width: '100%',
-    alignItems: 'flex-end',
+    width: "100%",
+    alignItems: "flex-end",
   },
   modalText: {
     margin: 30,
-    textAlign: "center"
+    textAlign: "center",
   },
   modalFooter: {
-    width: '100%',
-    alignItems: 'flex-start',
+    width: "100%",
+    alignItems: "flex-start",
   },
 });
 

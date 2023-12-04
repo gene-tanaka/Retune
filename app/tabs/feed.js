@@ -22,7 +22,6 @@ export default function Page() {
 
   const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
 
-
   const fetchFollowingUsers = async () => {
     const response = await getFollowingList(loggedInUserId);
     setFollowingUsers(response);
@@ -42,8 +41,8 @@ export default function Page() {
       return false;
     }
     // Check if the user is already being followed
-    const isFollowing = followingUsers.some(followingUser => {
-      return followingUser.id === user.id
+    const isFollowing = followingUsers.some((followingUser) => {
+      return followingUser.id === user.id;
     });
 
     // Include the user in exploreUsers if not already being followed
@@ -58,7 +57,7 @@ export default function Page() {
     setExploreUserIndex(exploreUserIndex + 1);
     await followUser(loggedInUserId, exploreUsers[exploreUserIndex].id);
     setModalVisible(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setModalVisible(false);
@@ -97,7 +96,7 @@ export default function Page() {
       style={styles.background}
     >
       <TextInput
-        style={styles.searchBar}
+        style={[styles.searchBar, { color: "white" }]}
         placeholder="Search by name or username"
         placeholderTextColor={Themes.colors.secondary}
         onChangeText={(text) => setSearchQuery(text)}
@@ -155,15 +154,29 @@ export default function Page() {
           </View>
         </View>
       ) : (
-        <View>
+        <View
+          style={{
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>
+            {"\n"}
+            {"\n"}
+            {"\n"}
+            {"\n"}
+            {"\n"}
+            {"\n"}
+          </Text>
           <View style={styles.exploreCard}>
-            <Text>
+            <Text style={{ color: "white", fontSize: 18 }}>
               No new users at the moment! Please try again later or refresh.
             </Text>
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button} onPress={handleRefresh}>
-              <Text>Refresh</Text>
+              <Text style={{ color: "white" }}>Refresh</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -187,8 +200,13 @@ export default function Page() {
             </Text>
 
             <View style={styles.modalFooter}>
-              <TouchableOpacity style={styles.button} onPress={handleViewProfile}>
-                <Text style={{ color: "white", fontSize: 12 }}>View Profile</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleViewProfile}
+              >
+                <Text style={{ color: "white", fontSize: 12 }}>
+                  View Profile
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

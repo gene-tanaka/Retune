@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   FlatList,
   ActivityIndicator,
+  ImageBackground,
 } from "react-native";
 import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
@@ -73,16 +74,22 @@ export default function Page() {
   }, [params]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ImageBackground
+      source={require("../../assets/wavy.png")}
+      resizeMode="cover"
+      style={styles.container}
+    >
       <MyStatusBar barStyle="light-content" />
-      {usernames && posts && (
-        <FlatList
-          data={posts}
-          renderItem={(data) => <MyPost data={data} usernames={usernames} />}
-          contentContainerStyle={{ paddingBottom: 45, paddingTop: 30 }}
-        />
-      )}
-    </SafeAreaView>
+      <SafeAreaView>
+        {usernames && posts && (
+          <FlatList
+            data={posts}
+            renderItem={(data) => <MyPost data={data} usernames={usernames} />}
+            contentContainerStyle={{ paddingBottom: 45 }}
+          />
+        )}
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
 
@@ -90,7 +97,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // alignItems: "center",
-    padding: 24,
     backgroundColor: "#232324",
   },
   main: {
