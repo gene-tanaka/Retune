@@ -6,5 +6,6 @@ export const colors = {
   text: "#FFFFFF",
   textSecondary: "#F0F0F0",
   buttons: "#067A00",
+  buttonGray: "#353635",
   tab: "black",
 };

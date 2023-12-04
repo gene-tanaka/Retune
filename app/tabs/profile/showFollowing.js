@@ -1,4 +1,11 @@
-import { Text, View, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from "react-native";
 import styles from "../../../styles";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
@@ -17,48 +24,56 @@ export default function ShowFollowing() {
   };
 
   return (
-    <ScrollView style={[styles.userList]}>
-      {following &&
-        following.map((user) => (
-          <TouchableOpacity
-            key={user.id}
-            onPress={() => {
-              handleViewSearchedUserProfile(user.id);
-            }}
-            style={{ marginBottom: 5 }}
-          >
-            <View
+    <ImageBackground
+      source={require("../../../assets/wavy.png")}
+      resizeMode="cover"
+      style={{ flex: 1 }}
+    >
+      <ScrollView style={[styles.userList]}>
+        {following &&
+          following.map((user) => (
+            <TouchableOpacity
               key={user.id}
-              style={[
-                {
-                  alignItems: "center",
-                  backgroundColor: "gray",
-                  flexDirection: "row",
-                  padding: 10,
-                  borderRadius: 15,
-                },
-              ]}
+              onPress={() => {
+                handleViewSearchedUserProfile(user.id);
+              }}
+              style={{ marginBottom: 5 }}
             >
-              <Image
-                source={{
-                  uri: uri + user.profilePic,
-                }}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 50,
-                  marginRight: 10,
-                }}
-              />
-              <View style={{ flexDirection: "column" }}>
-                <Text style={styles.searchListCardText}>@{user.username}</Text>
-                <Text style={styles.searchListCardText}>
-                  {user.firstName} {user.lastName}
-                </Text>
+              <View
+                key={user.id}
+                style={[
+                  {
+                    alignItems: "center",
+                    backgroundColor: "black",
+                    flexDirection: "row",
+                    padding: 10,
+                    borderRadius: 15,
+                  },
+                ]}
+              >
+                <Image
+                  source={{
+                    uri: uri + user.profilePic,
+                  }}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 50,
+                    marginRight: 10,
+                  }}
+                />
+                <View style={{ flexDirection: "column" }}>
+                  <Text style={styles.searchListCardText}>
+                    @{user.username}
+                  </Text>
+                  <Text style={styles.searchListCardText}>
+                    {user.firstName} {user.lastName}
+                  </Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-    </ScrollView>
+            </TouchableOpacity>
+          ))}
+      </ScrollView>
+    </ImageBackground>
   );
 }

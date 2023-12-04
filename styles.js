@@ -22,11 +22,12 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.9,
     borderRadius: 20,
     padding: 10,
-    marginBottom: 30,
+    marginBottom: 10,
     backgroundColor: Themes.colors.containers,
   },
   userList: {
-    width: windowWidth * 0.9,
+    width: windowWidth,
+    padding: 15,
   },
   searchListCard: {
     backgroundColor: "black",
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginBottom: 10,
-    width: "100%",
   },
   searchListCardText: {
     color: "white",

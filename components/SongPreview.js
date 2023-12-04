@@ -10,6 +10,12 @@ const windowWidth = Dimensions.get("window").width;
 const SongPreview = ({ preview, title, artist, duration }) => {
   const [currentSound, setCurrentSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [playColor, setPlayColor] = useState(Themes.colors.buttons);
+
+  if (preview === null) {
+    setPlayColor(Themes.colors.buttonGray);
+  }
+
   const play = async () => {
     try {
       await Audio.setAudioModeAsync({
@@ -56,7 +62,7 @@ const SongPreview = ({ preview, title, artist, duration }) => {
           />
         ) : (
           <TouchableOpacity onPress={play}>
-            <AntDesign name="play" size={30} color={Themes.colors.buttons} />
+            <AntDesign name="play" size={30} color={playColor} />
           </TouchableOpacity>
         )}
       </TouchableOpacity>

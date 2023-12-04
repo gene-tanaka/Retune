@@ -7,6 +7,7 @@ import {
   ScrollView,
   ImageBackground,
   Modal,
+  Image,
 } from "react-native";
 import styles from "../../../styles";
 import { useUser } from "../../../contexts/UserContext";
@@ -28,6 +29,9 @@ export default function Page() {
   const [currentUserId, setCurrentUserId] = useState(null); // State to store the current user id
 
   const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
+
+  const uri =
+    "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/";
 
   const fetchFollowingUsers = async () => {
     const response = await getFollowingList(loggedInUserId);
@@ -133,12 +137,44 @@ export default function Page() {
                 onPress={() => {
                   handleViewSearchedUserProfile(user.id);
                 }}
+                style={{ marginBottom: 5 }}
               >
-                <View key={user.id} style={styles.searchListCard}>
-                  <Text style={styles.searchListCardText}>{user.username}</Text>
-                  <Text style={styles.searchListCardText}>
-                    {user.firstName} {user.lastName}
-                  </Text>
+                <View
+                  key={user.id}
+                  style={[
+                    {
+                      alignItems: "center",
+                      backgroundColor: "black",
+                      flexDirection: "row",
+                      padding: 10,
+                      borderRadius: 15,
+                    },
+                  ]}
+                >
+                  <Image
+                    source={{
+                      uri: uri + user.profilePic,
+                    }}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      marginRight: 10,
+                    }}
+                  />
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Text style={styles.searchListCardText}>
+                      {user.username}
+                    </Text>
+                    <Text style={styles.searchListCardText}>
+                      {user.firstName} {user.lastName}
+                    </Text>
+                  </View>
                 </View>
               </TouchableOpacity>
             ))}
@@ -146,6 +182,7 @@ export default function Page() {
         ) : exploreUserIndex < exploreUsers.length ? (
           <View>
             <Text>
+              {"\n"}
               {"\n"}
               {"\n"}
               {"\n"}
@@ -198,6 +235,7 @@ export default function Page() {
         ) : (
           <View style={{ alignItems: "center" }}>
             <Text>
+              {"\n"}
               {"\n"}
               {"\n"}
               {"\n"}
