@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.9,
   },
   searchListCard: {
-    backgroundColor: Themes.colors.containers2,
+    backgroundColor: "black",
     justifyContent: "center",
     borderRadius: 10,
     padding: 10,
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   exploreCard: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Themes.colors.containers,
+    backgroundColor: "black",
     borderRadius: 20,
     padding: 20,
     shadowColor: "#000",
@@ -50,6 +50,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 3,
+    width: windowWidth * 0.9,
+    height: windowWidth * 0.6,
   },
   buttonContainer: {
     flexDirection: "row",

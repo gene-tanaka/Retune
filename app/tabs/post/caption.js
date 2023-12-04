@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
 
   caption: {
-    backgroundColor: Themes.colors.containers,
+    backgroundColor: "black",
     flexDirection: "row",
     borderRadius: 25,
     padding: 15,

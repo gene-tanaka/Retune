@@ -22,16 +22,6 @@ export default function ProfileLayout() {
           headerTintColor: "#848487",
         }}
       />
-      {/* <Stack.Screen
-        name="caption"
-        options={{
-          title: "Caption",
-          headerShown: true,
-          headerStyle: { backgroundColor: "black" },
-          headerTitleStyle: { color: "white" },
-          headerTintColor: "#848487",
-        }}
-      /> */}
     </Stack>
   );
 }
