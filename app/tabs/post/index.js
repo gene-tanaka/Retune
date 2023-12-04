@@ -38,7 +38,7 @@ export default function Page() {
   if (!image) {
     shown = (
       <Text style={{ color: Themes.colors.secondary, fontSize: 20 }}>
-        No image yet
+        ⇧ Upload image
       </Text>
     );
   }
@@ -49,40 +49,10 @@ export default function Page() {
       resizeMode="cover"
       style={styles.container}
     >
-      <TouchableOpacity onPress={pickImage} style={styles.upload}>
-        <Text style={{ color: "white", fontSize: 15 }}>⊕ Upload image</Text>
-      </TouchableOpacity>
-      <View style={styles.subContainer}>
+      <TouchableOpacity onPress={pickImage} style={styles.subContainer}>
         {image && <Image source={{ uri: image }} style={styles.image} />}
         {shown}
-      </View>
-      <View
-        style={{
-          position: "absolute",
-          paddingLeft: 335,
-          paddingBottom: 400,
-          marginRight: -30,
-        }}
-      >
-        {image && (
-          <View
-            style={{
-              position: "absolute",
-              width: 30,
-              height: 30,
-              top: 7.5,
-              left: 339,
-              borderRadius: 25,
-              backgroundColor: "white",
-            }}
-          />
-        )}
-        <Pressable onPress={() => setImage(null)}>
-          {image ? (
-            <Ionicons name="close-circle" size={40} color="red" />
-          ) : null}
-        </Pressable>
-      </View>
+      </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -97,6 +67,13 @@ export default function Page() {
       >
         <Text style={styles.text}>Next</Text>
       </TouchableOpacity>
+
+      <Pressable
+        onPress={() => setImage(null)}
+        style={{ position: "absolute", left: 350, top: 130 }}
+      >
+        {image ? <Ionicons name="close-circle" size={40} color="red" /> : null}
+      </Pressable>
     </ImageBackground>
   );
 }
@@ -129,7 +106,6 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
     width: windowWidth * 0.9,
     height: windowWidth * 0.9,
-    position: "absolute",
   },
   text: {
     color: "white",
@@ -150,9 +126,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
-    width: windowWidth * 0.5,
-    height: windowWidth * 0.07,
+    width: windowWidth * 0.4,
+    height: windowWidth * 0.1,
     margin: 10,
-    backgroundColor: Themes.colors.containers,
+    backgroundColor: "black",
   },
 });

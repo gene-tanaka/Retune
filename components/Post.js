@@ -62,18 +62,23 @@ const Post = ({
       <View
         style={{
           alignItems: "center",
-          backgroundColor: "black",
-          paddingTop: 5,
           borderRadius: 27,
+          marginTop: 20,
         }}
       >
-        <View style={styles.userContainer}>
-          <View style={styles.userSubContainer}>
-            <Image
-              source={{ uri: profile_uri }}
-              style={styles.profilePicture}
-            />
-            <Button titleStyle={{ fontSize: 18 }} color="white" title={user} />
+        <View style={styles.topContainer}>
+          <View style={styles.userContainer}>
+            <View style={styles.userSubContainer}>
+              <Image
+                source={{ uri: profile_uri }}
+                style={styles.profilePicture}
+              />
+              <Button
+                titleStyle={{ fontSize: 18 }}
+                color="white"
+                title={user}
+              />
+            </View>
           </View>
         </View>
         <Image source={{ uri: uri }} style={styles.image} />
@@ -84,30 +89,39 @@ const Post = ({
           artist={artist}
           duration={duration}
         />
-        <View style={styles.commentBar}>
-          <TouchableOpacity onPress={() => likeImage()}>
-            <FontAwesome name="heart" size={25} color={liked} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <FontAwesome
-              name="comment"
-              size={25}
-              color="white"
-              style={{ marginLeft: 15, paddingBottom: 3 }}
-            />
-          </TouchableOpacity>
+        <View style={styles.captionContainer}>
+          <View style={styles.caption}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginBottom: 5,
+                alignItems: "center",
+                alignContent: "center",
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity onPress={() => likeImage()}>
+                <FontAwesome name="heart" size={23} color={liked} />
+              </TouchableOpacity>
+              <TouchableOpacity style={{ marginLeft: 10, marginBottom: 4 }}>
+                <FontAwesome name="comment" size={23} color="white" />
+              </TouchableOpacity>
+            </View>
+            <Text numberOfLines={2} style={styles.text}>
+              {caption}
+            </Text>
+          </View>
         </View>
-        <View style={styles.caption}>
-          <Text numberOfLines={2} style={styles.text}>
-            {caption}
-          </Text>
-        </View>
-        <View style={{ marginLeft: -60, marginBottom: 5 }}>
+        <View>
           <Text
             style={{
-              color: "white",
+              color: Themes.colors.secondary,
               fontSize: 15,
-              marginLeft: 60,
+              flexDirection: "column",
+              justifyContent: "center",
+              alignContent: "center",
+              marginTop: 10,
+              marginBottom: 20,
             }}
           >
             {"Posted on " +
@@ -130,18 +144,18 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
+    borderBottomColor: "#1f1f1f",
+    borderBottomWidth: 1,
   },
   commentBar: {
     // backgroundColor: Themes.colors.containers,
     backgroundColor: "black",
     flexDirection: "row",
-    width: windowWidth * 0.27,
+    width: windowWidth * 0.25,
     borderRadius: 25,
-    padding: 10,
-    marginTop: 5,
-    marginLeft: -245,
+    marginLeft: 5,
+    justifyContent: "space-evenly",
     alignItems: "center",
-    justifyContent: "center",
   },
   userContainer: {
     // backgroundColor: Themes.colors.containers,
@@ -150,7 +164,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     padding: 5,
     paddingRight: 10,
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     width: windowWidth * 0.9,
     alignItems: "center",
     alignContent: "center",
@@ -162,6 +176,10 @@ const styles = StyleSheet.create({
     alignContent: "center",
     padding: 1,
   },
+  topContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
   image: {
     flexDirection: "column",
     backgroundColor: "#343436",
@@ -169,7 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignContent: "space-between",
-    margin: 5,
+    margin: 10,
     width: windowWidth * 0.9,
     height: windowWidth * 0.9,
   },
@@ -182,16 +200,24 @@ const styles = StyleSheet.create({
     color: "white",
   },
   caption: {
-    backgroundColor: Themes.colors.containers,
-    // backgroundColor: "black",
-    flexDirection: "row",
+    backgroundColor: "black",
+    // flexDirection: "row",
     borderRadius: 25,
     justifyContent: "flex-start",
     alignItems: "flex-start",
     alignContent: "flex-start",
     padding: 15,
     width: windowWidth * 0.9,
-    height: windowWidth * 0.2,
+    height: windowWidth * 0.3,
     margin: 5,
+  },
+  captionContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  likeContainer: {
+    flexDirection: "row",
+    position: "absolute",
+    justifyContent: "space-between",
   },
 });

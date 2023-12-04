@@ -51,12 +51,12 @@ const SongPreview = ({ preview, title, artist, duration }) => {
         {isPlaying ? (
           <AntDesign
             name="pausecircle"
-            size={25}
+            size={30}
             color={Themes.colors.buttons}
           />
         ) : (
           <TouchableOpacity onPress={play}>
-            <AntDesign name="play" size={25} color={Themes.colors.buttons} />
+            <AntDesign name="play" size={30} color={Themes.colors.buttons} />
           </TouchableOpacity>
         )}
       </TouchableOpacity>
@@ -106,12 +106,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   songContainer: {
-    backgroundColor: Themes.colors.containers,
-    // backgroundColor: "black",
+    // backgroundColor: Themes.colors.containers,
+    backgroundColor: "black",
     flexDirection: "row",
     borderRadius: 25,
     justifyContent: "space-evenly",
-    padding: 8,
     alignItems: "center",
     width: windowWidth * 0.9,
     height: windowWidth * 0.12,
