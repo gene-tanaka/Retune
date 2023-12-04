@@ -13,6 +13,7 @@ import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
 import { getAllUsers, getFollowingList, followUser } from "../api";
 import ProfileContent from "../../components/ProfileContent";
+import { Ionicons } from "@expo/vector-icons";
 import SongPreview from "../../components/SongPreview";
 
 export default function Page() {
@@ -25,7 +26,6 @@ export default function Page() {
   const [currentUserId, setCurrentUserId] = useState(null); // State to store the current user id
 
   const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
-
 
   const fetchFollowingUsers = async () => {
     const response = await getFollowingList(loggedInUserId);
@@ -46,8 +46,8 @@ export default function Page() {
       return false;
     }
     // Check if the user is already being followed
-    const isFollowing = followingUsers.some(followingUser => {
-      return followingUser.id === user.id
+    const isFollowing = followingUsers.some((followingUser) => {
+      return followingUser.id === user.id;
     });
 
     // Include the user in exploreUsers if not already being followed
@@ -61,7 +61,7 @@ export default function Page() {
   const handleFollow = async () => {
     await followUser(loggedInUserId, exploreUsers[exploreUserIndex].id);
     setModalVisible(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setExploreUserIndex(exploreUserIndex + 1);
@@ -77,7 +77,7 @@ export default function Page() {
   const handleViewSearchedUserProfile = (userId) => {
     setViewingProfile(true);
     setCurrentUserId(userId);
-  }
+  };
 
   const handleRefresh = () => {
     fetchFollowingUsers();
@@ -87,7 +87,7 @@ export default function Page() {
   const handleBack = () => {
     setViewingProfile(false);
     setCurrentUserId(null);
-  }
+  };
 
   const filteredUsers = allUsers.filter((user) => {
     const fullName = `${user.firstName || ""} ${
@@ -108,9 +108,7 @@ export default function Page() {
 
   const renderBody = () => {
     if (viewingProfile && currentUserId) {
-      return (
-        <ProfileContent userId={currentUserId} handleBack={handleBack} />
-      )
+      return <ProfileContent userId={currentUserId} handleBack={handleBack} />;
     } else {
       return (
         <ImageBackground
@@ -129,9 +127,14 @@ export default function Page() {
           {searchQuery ? (
             <ScrollView style={styles.userList}>
               {filteredUsers.map((user) => (
-                <TouchableOpacity key={user.id} onPress={() => handleViewSearchedUserProfile(user.id)}>
+                <TouchableOpacity
+                  key={user.id}
+                  onPress={() => handleViewSearchedUserProfile(user.id)}
+                >
                   <View key={user.id} style={styles.searchListCard}>
-                    <Text style={styles.searchListCardText}>{user.username}</Text>
+                    <Text style={styles.searchListCardText}>
+                      {user.username}
+                    </Text>
                     <Text style={styles.searchListCardText}>
                       {user.firstName} {user.lastName}
                     </Text>
@@ -149,8 +152,14 @@ export default function Page() {
                 {"\n"}
                 {"\n"}
               </Text>
-              <View style={styles.exploreCard}>
-                <TouchableOpacity onPress={() => handleViewSearchedUserProfile(exploreUsers[exploreUserIndex].id)}>
+              <TouchableOpacity
+                onPress={() =>
+                  handleViewSearchedUserProfile(
+                    exploreUsers[exploreUserIndex].id
+                  )
+                }
+              >
+                <View style={styles.exploreCard}>
                   <Text style={styles.username}>
                     @{exploreUsers[exploreUserIndex].username}
                   </Text>
@@ -210,28 +219,48 @@ export default function Page() {
             onRequestClose={handleCloseModal}
           >
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View style={styles.modalHeader}>
-                  <TouchableOpacity onPress={handleCloseModal}>
-                    <Text>X</Text>
+              <View style={[styles.modalView, { padding: 30 }]}>
+                <View
+                  style={[
+                    styles.modalHeader,
+                    {
+                      margin: 5,
+                      flexDirection: "row",
+                      position: "absolute",
+                      justifyContent: "flex-end",
+                    },
+                  ]}
+                >
+                  <TouchableOpacity onPress={handleCloseModal} style={{}}>
+                    <Ionicons name="close-circle" size={40} color="red" />
                   </TouchableOpacity>
                 </View>
 
                 <Text style={styles.modalText}>
-                  Added user {exploreUsers[exploreUserIndex - 1]?.username}!
+                  Added user @{exploreUsers[exploreUserIndex]?.username}!
                 </Text>
 
-                <View style={styles.modalFooter}>
-                  <TouchableOpacity style={styles.button} onPress={handleViewProfileFromModal}>
-                    <Text style={{ color: "white", fontSize: 12 }}>View Profile</Text>
+                <View>
+                  <TouchableOpacity
+                    style={[styles.button, { width: 120 }]}
+                    onPress={handleViewProfileFromModal}
+                  >
+                    <Text
+                      style={{
+                        color: "white",
+                        fontSize: 15,
+                      }}
+                    >
+                      View Profile
+                    </Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </Modal>
         </ImageBackground>
-      )
+      );
     }
-  }
+  };
   return renderBody();
 }
