@@ -5,10 +5,5 @@ import ProfileContent from "../../../components/ProfileContent";
 export default function ProfilePage() {
   const { loggedInUserId } = useUser();
 
-  return (
-    <ProfileContent
-      userId={loggedInUserId}
-      handleBack={null}
-    />
-  );
+  return <ProfileContent userId={loggedInUserId} />;
 }
