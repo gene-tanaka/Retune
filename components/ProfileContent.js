@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-
+import { useUser } from "../contexts/UserContext";
 import {
   getFollowingList,
   getFollowerList,
@@ -20,33 +20,25 @@ import SongPreview from "./SongPreview";
 import { Themes } from "../assets/Themes";
 import Post from "./Post";
 
-const windowWidth = Dimensions.get("window").width;
-
-// const MyPost = ({ post, username, profilePic }) => {
-//   return (
-//     <Post
-// key={post.id}
-// user={"@" + username}
-// image={post.imageUrl}
-// caption={post.caption}
-// preview={post.preview}
-// title={post.title}
-// artist={post.artist}
-// duration={post.duration}
-// timestamp={post.timestamp}
-// profile={profilePic}
-//     />
-//   );
-// };
-
 const ProfileContent = ({ userId, handleBack }) => {
+  const { loggedInUserId } = useUser();
+  const params = useLocalSearchParams();
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState(null);
   const [following, setFollowing] = useState(null);
   const [followers, setFollowers] = useState(null);
   const [favoriteSong, setFavoriteSong] = useState(null);
   const router = useRouter();
-  const params = useLocalSearchParams();
+
+  useEffect(() => {
+    const favoriteSong = () => {
+      const song = JSON.parse(params.song);
+      setFavoriteSong(song);
+    };
+    if (params.song) {
+      favoriteSong();
+    }
+  }, [params.song]);
 
   const uri_prefix =
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/";
@@ -72,16 +64,18 @@ const ProfileContent = ({ userId, handleBack }) => {
     // Fetch posts, followers, and following data
     const fetchData = async () => {
       try {
-        const [fetchedPosts, fetchFollowing, fetchFollowers] = await Promise.all([
-          getPostsByUserId(userId),
-          getFollowingList(userId),
-          getFollowerList(userId),
-        ]);
+        const [fetchedPosts, fetchFollowing, fetchFollowers] =
+          await Promise.all([
+            getPostsByUserId(userId),
+            getFollowingList(userId),
+            getFollowerList(userId),
+          ]);
 
         // Sort and set posts
-        const sortedPosts = fetchedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const sortedPosts = fetchedPosts.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
         setPosts(sortedPosts);
-
         setFollowing(fetchFollowing);
         setFollowers(fetchFollowers);
       } catch (error) {
@@ -134,11 +128,15 @@ const ProfileContent = ({ userId, handleBack }) => {
               <Text style={styles.statLabel}>Posts</Text>
             </View>
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>{posts ? posts.length : 0}</Text>
+              <Text style={styles.statNumber}>
+                {followers ? followers.length : 0}
+              </Text>
               <Text style={styles.statLabel}>Followers</Text>
             </View>
             <View style={styles.stat}>
-              <Text style={styles.statNumber}>{posts ? posts.length : 0}</Text>
+              <Text style={styles.statNumber}>
+                {following ? following.length : 0}
+              </Text>
               <Text style={styles.statLabel}>Following</Text>
             </View>
           </View>
@@ -167,6 +165,7 @@ const ProfileContent = ({ userId, handleBack }) => {
             onPress={() =>
               router.push({
                 pathname: "/tabs/profile/addSong",
+                params: { fn: setFavoriteSong },
               })
             }
           >
@@ -183,21 +182,23 @@ const ProfileContent = ({ userId, handleBack }) => {
               artist={favoriteSong.artist}
               duration={favoriteSong.duration}
             />
-            <TouchableOpacity
-              style={{
-                marginTop: 10,
-                backgroundColor: Themes.colors.buttons,
-                padding: 8,
-                borderRadius: 20,
-              }}
-              onPress={() =>
-                router.push({
-                  pathname: "/tabs/profile/addSong",
-                })
-              }
-            >
-              <Text style={{ color: "white" }}>Change Song</Text>
-            </TouchableOpacity>
+            {loggedInUserId === userId ? (
+              <TouchableOpacity
+                style={{
+                  marginTop: 10,
+                  backgroundColor: Themes.colors.buttons,
+                  padding: 8,
+                  borderRadius: 20,
+                }}
+                onPress={() =>
+                  router.push({
+                    pathname: "/tabs/profile/addSong",
+                  })
+                }
+              >
+                <Text style={{ color: "white" }}>Change Song</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
         )}
       </View>
@@ -241,15 +242,12 @@ const styles = StyleSheet.create({
   },
   songContainer: {
     // backgroundColor: Themes.colors.containers,
-    backgroundColor: "black",
+    backgroundColor: "green",
     flexDirection: "row",
     borderRadius: 25,
     justifyContent: "space-evenly",
     padding: 8,
     alignItems: "center",
-    width: windowWidth * 0.93,
-    height: windowWidth * 0.12,
-    marginLeft: 12,
     marginBottom: 12,
   },
   postHeader: {
@@ -265,6 +263,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "white",
     fontWeight: "bold",
+    textDecorationLine: "underline",
   },
   profileCard: {
     backgroundColor: "#000",
@@ -354,6 +353,5 @@ const styles = StyleSheet.create({
   },
   // Add styles for Song component if needed
 });
-
 
 export default ProfileContent;
