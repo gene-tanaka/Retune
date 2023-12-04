@@ -16,6 +16,9 @@ import {
   getFollowerList,
   getPostsByUserId,
   getUsersByIds,
+  followUser,
+  getFollowingListIDs,
+  unfollowUser,
 } from "../app/api";
 import SongPreview from "./SongPreview";
 import { Themes } from "../assets/Themes";
@@ -27,8 +30,10 @@ const ProfileContent = ({ userId, handleBack }) => {
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState(null);
   const [following, setFollowing] = useState(null);
+  const [loggedInFollowing, setLoggedInFollowing] = useState(null);
   const [followers, setFollowers] = useState(null);
   const [favoriteSong, setFavoriteSong] = useState(null);
+  const [followingBool, setFollowingBool] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -43,6 +48,14 @@ const ProfileContent = ({ userId, handleBack }) => {
 
   const uri_prefix =
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/";
+
+  const handleFollow = async () => {
+    await followUser(loggedInUserId, userId);
+  };
+
+  const handleUnfollow = async () => {
+    await unfollowUser(loggedInUserId, userId);
+  };
 
   useEffect(() => {
     // Fetch profile data
@@ -65,12 +78,17 @@ const ProfileContent = ({ userId, handleBack }) => {
     // Fetch posts, followers, and following data
     const fetchData = async () => {
       try {
-        const [fetchedPosts, fetchFollowing, fetchFollowers] =
-          await Promise.all([
-            getPostsByUserId(userId),
-            getFollowingList(userId),
-            getFollowerList(userId),
-          ]);
+        const [
+          fetchedPosts,
+          fetchFollowing,
+          fetchFollowers,
+          fetchLoggedInFollowing,
+        ] = await Promise.all([
+          getPostsByUserId(userId),
+          getFollowingList(userId),
+          getFollowerList(userId),
+          getFollowingListIDs(loggedInUserId),
+        ]);
 
         // Sort and set posts
         const sortedPosts = fetchedPosts.sort(
@@ -79,12 +97,21 @@ const ProfileContent = ({ userId, handleBack }) => {
         setPosts(sortedPosts);
         setFollowing(fetchFollowing);
         setFollowers(fetchFollowers);
+        setLoggedInFollowing(fetchLoggedInFollowing);
+        if (fetchLoggedInFollowing.includes(Number(userId))) {
+          setFollowingBool(true);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    if (posts === null || following === null || followers === null) {
+    if (
+      posts === null ||
+      following === null ||
+      followers === null ||
+      loggedInFollowing === null
+    ) {
       fetchData();
     }
   }, [userId, posts, following, followers]);
@@ -149,6 +176,46 @@ const ProfileContent = ({ userId, handleBack }) => {
               </View>
             </View>
           </View>
+
+          {loggedInUserId === userId ? null : loggedInFollowing &&
+            followingBool === true ? (
+            <TouchableOpacity
+              style={{
+                backgroundColor: "white",
+                alignItems: "center",
+                width: 100,
+                padding: 5,
+                marginTop: 10,
+                borderRadius: 20,
+                borderWeight: 2,
+                borderColor: "red",
+              }}
+              onPress={() => {
+                handleUnfollow();
+                setFollowingBool(false);
+              }}
+            >
+              <Text style={{ color: "black" }}>⊖ Unfollow</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={{
+                backgroundColor: "green",
+                alignItems: "center",
+                width: 100,
+                padding: 5,
+                marginTop: 10,
+                borderRadius: 20,
+              }}
+              onPress={() => {
+                handleFollow();
+                setFollowingBool(true);
+              }}
+            >
+              <Text style={{ color: "white" }}>⊕ Follow</Text>
+            </TouchableOpacity>
+          )}
+
           <View style={styles.bottomSection}>
             <Text style={styles.name}>
               {profile.firstName + " " + profile.lastName}

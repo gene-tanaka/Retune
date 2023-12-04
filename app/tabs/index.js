@@ -42,8 +42,8 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 export default function Page() {
   const { loggedInUserId } = useUser();
   const [following, setFollowing] = useState([loggedInUserId]);
-  const [posts, setPosts] = useState([]);
-  const [usernames, setUsernames] = useState({});
+  const [posts, setPosts] = useState(null);
+  const [usernames, setUsernames] = useState(null);
   const params = useLocalSearchParams();
 
   const fetchFollowing = async () => {
@@ -70,8 +70,10 @@ export default function Page() {
   };
 
   useEffect(() => {
-    fetchFollowing();
-  }, [params]);
+    if (posts === null || usernames === null) {
+      fetchFollowing();
+    }
+  }, [posts, usernames, params]);
 
   return (
     <ImageBackground
@@ -84,6 +86,7 @@ export default function Page() {
         {usernames && posts && (
           <FlatList
             data={posts}
+            initialNumToRender={5}
             renderItem={(data) => <MyPost data={data} usernames={usernames} />}
             contentContainerStyle={{ paddingBottom: 45 }}
           />

@@ -37,10 +37,10 @@ export default function HomeLayout() {
           options={{
             title: "Home",
             tabBarLabel: "Home",
-            headerShown: true,
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="home" size={30} color={color} />
             ),
+            headerShown: true,
           }}
         />
         <Tabs.Screen
@@ -51,7 +51,6 @@ export default function HomeLayout() {
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="flash-sharp" size={30} color={color} />
             ),
-            headerShown: true,
           }}
         />
         <Tabs.Screen
@@ -59,7 +58,6 @@ export default function HomeLayout() {
           options={{
             title: "Post",
             tabBarLabel: "Post",
-
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="add-circle-outline" size={30} color={color} />
             ),
@@ -73,8 +71,6 @@ export default function HomeLayout() {
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="person-circle-outline" size={30} color={color} />
             ),
-            // headerShown: true,
-            headerShown: false,
           }}
         />
       </Tabs>

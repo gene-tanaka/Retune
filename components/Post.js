@@ -16,6 +16,7 @@ import { Themes } from "../assets/Themes";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SongPreview from "../components/SongPreview";
 import { FontAwesome } from "@expo/vector-icons";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -48,6 +49,7 @@ const Post = ({
     return new Date(dateString).toLocaleTimeString(undefined, options);
   };
   const [liked, setLiked] = useState("white");
+  const router = useRouter();
 
   function likeImage() {
     if (liked === "white") {
@@ -94,17 +96,24 @@ const Post = ({
             <View
               style={{
                 flexDirection: "row",
-                marginBottom: 5,
+                marginBottom: 10,
                 alignItems: "center",
                 alignContent: "center",
                 justifyContent: "center",
               }}
             >
               <TouchableOpacity onPress={() => likeImage()}>
-                <FontAwesome name="heart" size={23} color={liked} />
+                <FontAwesome name="heart" size={25} color={liked} />
               </TouchableOpacity>
-              <TouchableOpacity style={{ marginLeft: 10, marginBottom: 4 }}>
-                <FontAwesome name="comment" size={23} color="white" />
+              <TouchableOpacity
+                style={{ marginLeft: 15, marginBottom: 4 }}
+                onPress={() =>
+                  router.push({
+                    pathname: "/tabs/test",
+                  })
+                }
+              >
+                <FontAwesome name="comment" size={25} color="white" />
               </TouchableOpacity>
             </View>
             <Text numberOfLines={2} style={styles.text}>
