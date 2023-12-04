@@ -106,11 +106,11 @@ const ProfileContent = ({ userId, handleBack }) => {
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 100 }}
       >
-      {handleBack && (
-        <TouchableOpacity style={styles.button} onPress={handleBack}>
-          <Text style={{ color: "white", fontSize: 18 }}>Back</Text>
-        </TouchableOpacity>
-      )}
+        {handleBack && (
+          <TouchableOpacity style={styles.button} onPress={handleBack}>
+            <Text style={{ color: "white", fontSize: 18 }}>Back</Text>
+          </TouchableOpacity>
+        )}
         <View style={styles.usernameContainer}>
           <Text style={styles.username}>{"@" + profile.username}</Text>
         </View>
@@ -130,19 +130,21 @@ const ProfileContent = ({ userId, handleBack }) => {
             </View>
             <View style={styles.statsContainer}>
               <View style={styles.stat}>
-                <Text style={styles.statNumber}>{posts ? posts.length : 0}</Text>
+                <Text style={styles.statNumber}>
+                  {posts ? posts.length : 0}
+                </Text>
                 <Text style={styles.statLabel}>Posts</Text>
               </View>
               <View style={styles.stat}>
                 <Text style={styles.statNumber}>
-                {followers ? followers.length : 0}
-              </Text>
+                  {followers ? followers.length : 0}
+                </Text>
                 <Text style={styles.statLabel}>Followers</Text>
               </View>
               <View style={styles.stat}>
                 <Text style={styles.statNumber}>
-                {following ? following.length : 0}
-              </Text>
+                  {following ? following.length : 0}
+                </Text>
                 <Text style={styles.statLabel}>Following</Text>
               </View>
             </View>
@@ -158,7 +160,7 @@ const ProfileContent = ({ userId, handleBack }) => {
           style={{
             textAlign: "center",
             color: "white",
-            fontSize: 20,
+            fontSize: 24,
             fontWeight: "bold",
           }}
         >
@@ -192,7 +194,7 @@ const ProfileContent = ({ userId, handleBack }) => {
                 artist={favoriteSong.artist}
                 duration={favoriteSong.duration}
               />
-            {loggedInUserId === userId ? (
+              {loggedInUserId === userId ? (
                 <TouchableOpacity
                   style={{
                     marginTop: 10,
@@ -208,31 +210,32 @@ const ProfileContent = ({ userId, handleBack }) => {
                 >
                   <Text style={{ color: "white" }}>Change Song</Text>
                 </TouchableOpacity>
-            ) : null}
+              ) : null}
             </View>
           )}
         </View>
 
-      <View style={styles.postHeader}>
-        <Text style={styles.headerText}>My Posts</Text>
-      </View>
-      <View>
-        {posts?.map((post) => (
-          <Post
-            key={post.id}
-            user={"@" + profile.username}
-            imageUrl={post.imageUrl}
-            caption={post.caption}
-            preview={post.preview}
-            title={post.title}
-            artist={post.artist}
-            duration={post.duration}
-            timestamp={post.timestamp}
-            profile={profile.profilePic}
-          />
-        ))}
-      </View>
-    </ScrollView>
+        <View style={styles.postHeader}>
+          <Text style={styles.headerText}>Posts</Text>
+        </View>
+        <View>
+          {posts?.map((post) => (
+            <Post
+              key={post.id}
+              user={"@" + profile.username}
+              imageUrl={post.imageUrl}
+              caption={post.caption}
+              preview={post.preview}
+              title={post.title}
+              artist={post.artist}
+              duration={post.duration}
+              timestamp={post.timestamp}
+              profile={profile.profilePic}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 
@@ -242,7 +245,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   favSongContainer: {
-    // backgroundColor: "black",
     paddingTop: 15,
     paddingBottom: 5,
     marginHorizontal: 10,
@@ -256,43 +258,29 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     padding: 8,
     alignItems: "center",
-    width: windowWidth * 0.93,
-    height: windowWidth * 0.12,
     marginLeft: 12,
   },
   postHeader: {
-    // borderTopWidth: 1,
-    // borderTopColor: Themes.colors.containers,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 15,
-    paddingTop: 10,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 24,
     color: "white",
     fontWeight: "bold",
-    textDecorationLine: "underline",
   },
   profileCard: {
     backgroundColor: "#000",
     padding: 15,
     marginHorizontal: 10,
-    // borderBottomRightRadius: 30,
-    // borderBottomLeftRadius: 30,
     borderRadius: 30,
     marginBottom: 40,
   },
   usernameContainer: {
-    // backgroundColor: "#000",
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 10,
     marginHorizontal: 10,
-    // borderTopRightRadius: 30,
-    // borderTopLeftRadius: 30,
-    // borderBottomWidth: 1,
-    // borderBottomColor: Themes.colors.containers,
   },
   topSection: {
     flexDirection: "row",
@@ -320,7 +308,7 @@ const styles = StyleSheet.create({
   },
   username: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
     marginLeft: 5,
     marginBottom: 10,

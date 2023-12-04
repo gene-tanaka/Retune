@@ -62,9 +62,8 @@ const Post = ({
       <View
         style={{
           alignItems: "center",
-          // backgroundColor: "black",
           borderRadius: 27,
-          marginTop: 50,
+          marginTop: 20,
         }}
       >
         <View style={styles.topContainer}>
