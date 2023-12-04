@@ -19,6 +19,8 @@ import {
 import SongPreview from "./SongPreview";
 import { Themes } from "../assets/Themes";
 import Post from "./Post";
+import { useUser } from "../contexts/UserContext";
+import { renderInitials } from "../app/tabs/helpers";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -46,6 +48,7 @@ const ProfileContent = ({ userId, handleBack }) => {
   const [followers, setFollowers] = useState(null);
   const [favoriteSong, setFavoriteSong] = useState(null);
   const router = useRouter();
+  const { loggedInUserId } = useUser();
   const params = useLocalSearchParams();
 
   const uri_prefix =
@@ -123,8 +126,15 @@ const ProfileContent = ({ userId, handleBack }) => {
                   source={{ uri: uri_prefix + profile.profilePic }}
                   style={styles.profilePic}
                 />
-              ) : (
+              ) : loggedInUserId == userId ? (
                 <Text style={styles.addPhotoText}>Add Photo</Text>
+              ) : (
+                  <Text style={styles.addPhotoText}>
+                    {renderInitials(
+                      profile.firstName,
+                      profile.lastName
+                    )}
+                  </Text>
               )}
             </TouchableOpacity>
           </View>
@@ -161,7 +171,7 @@ const ProfileContent = ({ userId, handleBack }) => {
         >
           Current Favorite Song:
         </Text>
-        {!favoriteSong ? (
+        {!favoriteSong ? loggedInUserId == userId ? (
           <TouchableOpacity
             style={styles.songContainer}
             onPress={() =>
@@ -174,6 +184,12 @@ const ProfileContent = ({ userId, handleBack }) => {
               ⊕ Add a favorite song!
             </Text>
           </TouchableOpacity>
+        ) : (
+          <View style={{ alignItems: "center", marginBottom: 10 }}>
+            <Text style={{ color: "white", fontSize: 16 }}>
+              Not yet added.
+            </Text>
+          </View>
         ) : (
           <View style={{ alignItems: "center", marginBottom: 10 }}>
             <SongPreview

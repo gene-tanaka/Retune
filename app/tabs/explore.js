@@ -13,6 +13,7 @@ import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
 import { getAllUsers, getFollowingList, followUser } from "../api";
 import ProfileContent from "../../components/ProfileContent";
+import { renderInitials } from "./helpers";
 
 export default function Page() {
   const { loggedInUserId } = useUser();
@@ -98,10 +99,6 @@ export default function Page() {
       username.includes(searchQuery.toLowerCase())
     );
   });
-
-  const renderInitials = (firstName, lastName) => {
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`;
-  };
 
   const renderBody = () => {
     if (viewingProfile && currentUserId) {
