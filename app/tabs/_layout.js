@@ -33,14 +33,14 @@ export default function HomeLayout() {
         }}
       >
         <Tabs.Screen
-          name="index"
+          name="home"
           options={{
             title: "Home",
             tabBarLabel: "Home",
             tabBarIcon: ({ size, color }) => (
               <Ionicons name="home" size={30} color={color} />
             ),
-            headerShown: true,
+            // headerShown: true,
           }}
         />
         <Tabs.Screen

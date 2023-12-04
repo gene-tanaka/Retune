@@ -109,7 +109,7 @@ const Post = ({
                 style={{ marginLeft: 15, marginBottom: 4 }}
                 onPress={() =>
                   router.push({
-                    pathname: "/tabs/test",
+                    pathname: "/tabs/home/comments",
                   })
                 }
               >

@@ -8,9 +8,13 @@ import {
   ImageBackground,
 } from "react-native";
 import { useState, useEffect } from "react";
-import { useUser } from "../../contexts/UserContext";
-import { getFollowingListIDs, getPostsByUserIds, getUsersByIds } from "../api";
-import Post from "../../components/Post";
+import { useUser } from "../../../contexts/UserContext";
+import {
+  getFollowingListIDs,
+  getPostsByUserIds,
+  getUsersByIds,
+} from "../../api";
+import Post from "../../../components/Post";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 const MyPost = ({ data, usernames }) => {
@@ -77,7 +81,7 @@ export default function Page() {
 
   return (
     <ImageBackground
-      source={require("../../assets/wavy.png")}
+      source={require("../../../assets/wavy.png")}
       resizeMode="cover"
       style={styles.container}
     >

@@ -34,6 +34,11 @@ const ProfileContent = ({ userId, handleBack }) => {
   const [followers, setFollowers] = useState(null);
   const [favoriteSong, setFavoriteSong] = useState(null);
   const [followingBool, setFollowingBool] = useState(false);
+  const [loggedInFollowingProfiles, setLoggedInFollowingProfiles] =
+    useState(null);
+  const [loggedInFollowerProfiles, setLoggedInFollowerProfiles] =
+    useState(null);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -83,11 +88,15 @@ const ProfileContent = ({ userId, handleBack }) => {
           fetchFollowing,
           fetchFollowers,
           fetchLoggedInFollowing,
+          fetchLoggedInFollowingProfiles,
+          fetchLoggedInFollowerProfiles,
         ] = await Promise.all([
           getPostsByUserId(userId),
           getFollowingList(userId),
           getFollowerList(userId),
           getFollowingListIDs(loggedInUserId),
+          getFollowingList(loggedInUserId),
+          getFollowerList(loggedInUserId),
         ]);
 
         // Sort and set posts
@@ -101,6 +110,8 @@ const ProfileContent = ({ userId, handleBack }) => {
         if (fetchLoggedInFollowing.includes(Number(userId))) {
           setFollowingBool(true);
         }
+        setLoggedInFollowingProfiles(fetchLoggedInFollowingProfiles);
+        setLoggedInFollowerProfiles(fetchLoggedInFollowerProfiles);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -162,18 +173,42 @@ const ProfileContent = ({ userId, handleBack }) => {
                 </Text>
                 <Text style={styles.statLabel}>Posts</Text>
               </View>
-              <View style={styles.stat}>
+              <TouchableOpacity
+                style={styles.stat}
+                onPress={() => {
+                  loggedInUserId === userId
+                    ? router.push({
+                        pathname: "/tabs/profile/showFollowers",
+                        params: {
+                          data: JSON.stringify(loggedInFollowerProfiles),
+                        },
+                      })
+                    : null;
+                }}
+              >
                 <Text style={styles.statNumber}>
                   {followers ? followers.length : 0}
                 </Text>
                 <Text style={styles.statLabel}>Followers</Text>
-              </View>
-              <View style={styles.stat}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.stat}
+                onPress={() => {
+                  loggedInUserId === userId
+                    ? router.push({
+                        pathname: "/tabs/profile/showFollowing",
+                        params: {
+                          data: JSON.stringify(loggedInFollowingProfiles),
+                        },
+                      })
+                    : null;
+                }}
+              >
                 <Text style={styles.statNumber}>
                   {following ? following.length : 0}
                 </Text>
                 <Text style={styles.statLabel}>Following</Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
 
