@@ -56,10 +56,12 @@ const ProfileContent = ({ userId, handleBack }) => {
 
   const handleFollow = async () => {
     await followUser(loggedInUserId, userId);
+    await fetchData();
   };
 
   const handleUnfollow = async () => {
     await unfollowUser(loggedInUserId, userId);
+    await fetchData();
   };
 
   useEffect(() => {
@@ -79,44 +81,44 @@ const ProfileContent = ({ userId, handleBack }) => {
     }
   }, [userId, profile]);
 
+  const fetchData = async () => {
+    try {
+      const [
+        fetchedPosts,
+        fetchFollowing,
+        fetchFollowers,
+        fetchLoggedInFollowing,
+        fetchLoggedInFollowingProfiles,
+        fetchLoggedInFollowerProfiles,
+      ] = await Promise.all([
+        getPostsByUserId(userId),
+        getFollowingList(userId),
+        getFollowerList(userId),
+        getFollowingListIDs(loggedInUserId),
+        getFollowingList(loggedInUserId),
+        getFollowerList(loggedInUserId),
+      ]);
+
+      // Sort and set posts
+      const sortedPosts = fetchedPosts.sort(
+        (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+      );
+      setPosts(sortedPosts);
+      setFollowing(fetchFollowing);
+      setFollowers(fetchFollowers);
+      setLoggedInFollowing(fetchLoggedInFollowing);
+      if (fetchLoggedInFollowing.includes(Number(userId))) {
+        setFollowingBool(true);
+      }
+      setLoggedInFollowingProfiles(fetchLoggedInFollowingProfiles);
+      setLoggedInFollowerProfiles(fetchLoggedInFollowerProfiles);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
     // Fetch posts, followers, and following data
-    const fetchData = async () => {
-      try {
-        const [
-          fetchedPosts,
-          fetchFollowing,
-          fetchFollowers,
-          fetchLoggedInFollowing,
-          fetchLoggedInFollowingProfiles,
-          fetchLoggedInFollowerProfiles,
-        ] = await Promise.all([
-          getPostsByUserId(userId),
-          getFollowingList(userId),
-          getFollowerList(userId),
-          getFollowingListIDs(loggedInUserId),
-          getFollowingList(loggedInUserId),
-          getFollowerList(loggedInUserId),
-        ]);
-
-        // Sort and set posts
-        const sortedPosts = fetchedPosts.sort(
-          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-        );
-        setPosts(sortedPosts);
-        setFollowing(fetchFollowing);
-        setFollowers(fetchFollowers);
-        setLoggedInFollowing(fetchLoggedInFollowing);
-        if (fetchLoggedInFollowing.includes(Number(userId))) {
-          setFollowingBool(true);
-        }
-        setLoggedInFollowingProfiles(fetchLoggedInFollowingProfiles);
-        setLoggedInFollowerProfiles(fetchLoggedInFollowerProfiles);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
     if (
       posts === null ||
       following === null ||
