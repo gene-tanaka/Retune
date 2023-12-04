@@ -13,6 +13,7 @@ import { useUser } from "../../contexts/UserContext";
 import { Themes } from "../../assets/Themes";
 import { getAllUsers, getFollowingList, followUser } from "../api";
 import ProfileContent from "../../components/ProfileContent";
+import SongPreview from "../../components/SongPreview";
 
 export default function Page() {
   const { loggedInUserId } = useUser();
@@ -103,6 +104,8 @@ export default function Page() {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`;
   };
 
+  const favoriteSong = exploreUsers[exploreUserIndex] ? JSON.parse(exploreUsers[exploreUserIndex].favoriteSong) : null;
+
   const renderBody = () => {
     if (viewingProfile && currentUserId) {
       return (
@@ -146,28 +149,37 @@ export default function Page() {
                 {"\n"}
                 {"\n"}
               </Text>
-              <TouchableOpacity onPress={() => handleViewSearchedUserProfile(exploreUsers[exploreUserIndex].id)}>
-                <View style={styles.exploreCard}>
+              <View style={styles.exploreCard}>
+                <TouchableOpacity onPress={() => handleViewSearchedUserProfile(exploreUsers[exploreUserIndex].id)}>
                   <Text style={styles.username}>
                     @{exploreUsers[exploreUserIndex].username}
                   </Text>
-                  <Text style={styles.about}>
-                    About {exploreUsers[exploreUserIndex].firstName}{" "}
-                    {exploreUsers[exploreUserIndex].lastName}
-                  </Text>
-                  <View style={styles.profilePic}>
-                    <Text style={styles.initials}>
-                      {renderInitials(
-                        exploreUsers[exploreUserIndex].firstName,
-                        exploreUsers[exploreUserIndex].lastName
-                      )}
-                    </Text>
-                  </View>
-                  <Text style={styles.description}>
-                    {exploreUsers[exploreUserIndex].description}
+                </TouchableOpacity>
+                <Text style={styles.about}>
+                  About {exploreUsers[exploreUserIndex].firstName}{" "}
+                  {exploreUsers[exploreUserIndex].lastName}
+                </Text>
+                <View style={styles.profilePic}>
+                  <Text style={styles.initials}>
+                    {renderInitials(
+                      exploreUsers[exploreUserIndex].firstName,
+                      exploreUsers[exploreUserIndex].lastName
+                    )}
                   </Text>
                 </View>
-              </TouchableOpacity>
+                <Text style={styles.description}>
+                  {exploreUsers[exploreUserIndex].description}
+                </Text>
+                {favoriteSong && (
+                  <SongPreview
+                    user={exploreUsers[exploreUserIndex].username}
+                    preview={favoriteSong.preview}
+                    title={favoriteSong.title}
+                    artist={favoriteSong.artist}
+                    duration={favoriteSong.duration}
+                  />
+                )}
+              </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={handlePass}>
                   <Text style={{ color: "white", fontSize: 18 }}>Pass</Text>
