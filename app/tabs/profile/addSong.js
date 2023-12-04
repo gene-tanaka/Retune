@@ -48,7 +48,7 @@ export default function Page() {
     await updateUser(loggedInUserId, { favoriteSong: song });
     router.push({
       pathname: "/tabs/profile/",
-      params: { success: "true" },
+      params: { song },
     });
   };
 

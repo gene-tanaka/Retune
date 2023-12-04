@@ -18,7 +18,7 @@ const MyPost = ({ data, usernames }) => {
     <Post
       key={post.id}
       user={"@" + usernames[post.userId].username}
-      image={post.imageUrl}
+      imageUrl={post.imageUrl}
       caption={post.caption}
       preview={post.preview}
       title={post.title}

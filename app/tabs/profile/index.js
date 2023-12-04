@@ -8,6 +8,7 @@ export default function ProfilePage() {
   return (
     <ProfileContent
       userId={loggedInUserId}
+      handleBack={null}
     />
   );
 }
