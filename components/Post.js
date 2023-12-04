@@ -21,7 +21,7 @@ const windowWidth = Dimensions.get("window").width;
 
 const Post = ({
   user,
-  image,
+  imageUrl,
   caption,
   preview,
   title,
@@ -32,7 +32,7 @@ const Post = ({
 }) => {
   const uri =
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
-    image;
+    imageUrl;
 
   const profile_uri =
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
