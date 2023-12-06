@@ -185,7 +185,7 @@ const ProfileContent = ({ userId, handleBack }) => {
                 }}
               >
                 <Text style={styles.statNumber}>
-                  {followers ? followers.length : 0}
+                  {loggedInUserId === userId ? loggedInFollowerProfiles?.length : followers?.length}
                 </Text>
                 <Text style={styles.statLabel}>Followers</Text>
               </TouchableOpacity>
@@ -203,7 +203,7 @@ const ProfileContent = ({ userId, handleBack }) => {
                 }}
               >
                 <Text style={styles.statNumber}>
-                  {following ? following.length : 0}
+                  {loggedInUserId === userId ? loggedInFollowingProfiles?.length : following?.length}
                 </Text>
                 <Text style={styles.statLabel}>Following</Text>
               </TouchableOpacity>
