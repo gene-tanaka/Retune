@@ -11,7 +11,6 @@ const SongPreview = ({ preview, title, artist, duration }) => {
   const [currentSound, setCurrentSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const playColor = preview ? Themes.colors.buttons : "gray";
-  //   console.log(preview);
 
   const play = async () => {
     try {
