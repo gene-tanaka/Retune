@@ -49,6 +49,7 @@ export default function Page() {
       .join([(separator = ", ")]);
     let title = item.songTitle.replaceAll(")", " ").replaceAll("(", "- ");
     let album = item.albumName.replaceAll(")", " ").replaceAll("(", "- ");
+
     router.push({
       pathname: "/tabs/post/caption",
       params: {
