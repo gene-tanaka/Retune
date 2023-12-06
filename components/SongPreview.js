@@ -10,11 +10,8 @@ const windowWidth = Dimensions.get("window").width;
 const SongPreview = ({ preview, title, artist, duration }) => {
   const [currentSound, setCurrentSound] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playColor, setPlayColor] = useState(Themes.colors.buttons);
-
-  if (preview === null) {
-    setPlayColor(Themes.colors.buttonGray);
-  }
+  const playColor = preview ? Themes.colors.buttons : "gray";
+  //   console.log(preview);
 
   const play = async () => {
     try {
