@@ -18,12 +18,11 @@ import { useRouter } from "expo-router";
 import SongPreview from "../../../components/SongPreview";
 
 export default function Page() {
-  const { loggedInUserId } = useUser();
+  const { loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
   const router = useRouter();
   const [exploreUserIndex, setExploreUserIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [allUsers, setAllUsers] = useState([]);
-  const [followingUsers, setFollowingUsers] = useState([]);
   const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
 
   const uri =
@@ -31,7 +30,7 @@ export default function Page() {
 
   const fetchFollowingUsers = async () => {
     const response = await getFollowingList(loggedInUserId);
-    setFollowingUsers(response);
+    setLoggedInFollowingProfiles(response);
   };
   useEffect(() => {
     const fetchUsers = async () => {
@@ -48,7 +47,7 @@ export default function Page() {
       return false;
     }
     // Check if the user is already being followed
-    const isFollowing = followingUsers.some((followingUser) => {
+    const isFollowing = loggedInFollowingProfiles?.some((followingUser) => {
       return followingUser.id === user.id;
     });
 
