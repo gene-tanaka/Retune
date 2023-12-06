@@ -13,9 +13,8 @@ import styles from "../../../styles";
 import { useUser } from "../../../contexts/UserContext";
 import { Themes } from "../../../assets/Themes";
 import { getAllUsers, getFollowingList, followUser } from "../../api";
-import ProfileContent from "../../../components/ProfileContent";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import SongPreview from "../../../components/SongPreview";
 
 export default function Page() {
@@ -25,9 +24,6 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [allUsers, setAllUsers] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
-  const [viewingProfile, setViewingProfile] = useState(false); // State to control whether to view the profile or not
-  const [currentUserId, setCurrentUserId] = useState(null); // State to store the current user id
-
   const [modalVisible, setModalVisible] = useState(false); // State to control Modal visibility
 
   const uri =
@@ -75,7 +71,6 @@ export default function Page() {
   };
 
   const handleViewSearchedUserProfile = (userId) => {
-    setCurrentUserId(userId);
     router.push({
       pathname: "tabs/explore/exploreUser",
       params: { userId: userId },
@@ -84,7 +79,6 @@ export default function Page() {
   };
 
   const viewProfile = (userId) => {
-    setCurrentUserId(userId);
     router.push({
       pathname: "tabs/explore/exploreUser",
       params: { userId: userId },

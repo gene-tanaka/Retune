@@ -25,7 +25,7 @@ import { Themes } from "../assets/Themes";
 import Post from "./Post";
 
 const ProfileContent = ({ userId, handleBack }) => {
-  const { loggedInUserId } = useUser();
+  const { loggedInUserId, loggedInFollowerProfiles, setLoggedInFollowerProfiles, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
   const params = useLocalSearchParams();
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState(null);
@@ -34,10 +34,6 @@ const ProfileContent = ({ userId, handleBack }) => {
   const [followers, setFollowers] = useState(null);
   const [favoriteSong, setFavoriteSong] = useState(null);
   const [followingBool, setFollowingBool] = useState(false);
-  const [loggedInFollowingProfiles, setLoggedInFollowingProfiles] =
-    useState(null);
-  const [loggedInFollowerProfiles, setLoggedInFollowerProfiles] =
-    useState(null);
 
   const router = useRouter();
 
