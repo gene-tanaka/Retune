@@ -138,6 +138,7 @@ const ProfileContent = ({ userId, handleBack }) => {
       </View>
     );
   }
+
   return (
     <ImageBackground
       source={require("../assets/wavy.png")}

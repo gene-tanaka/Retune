@@ -22,6 +22,7 @@ const MyPost = ({ data, usernames }) => {
   return (
     <Post
       key={post.id}
+      postId={post.id}
       user={"@" + usernames[post.userId].username}
       imageUrl={post.imageUrl}
       caption={post.caption}
@@ -31,6 +32,7 @@ const MyPost = ({ data, usernames }) => {
       duration={post.duration}
       timestamp={post.timestamp}
       profile={usernames[post.userId].profile}
+      userId={post.userId}
     />
   );
 };
@@ -67,6 +69,7 @@ export default function Page() {
           return new Date(b.timestamp) - new Date(a.timestamp);
         });
         setPosts(sortedPosts);
+        params.success = "false";
       }
     } catch (error) {
       console.error("Error loading posts: ", error);
@@ -74,7 +77,11 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (posts === null || usernames === null) {
+    if (
+      posts === null ||
+      usernames === null ||
+      (params && params.success === "true")
+    ) {
       fetchFollowing();
     }
   }, [posts, usernames, params]);
