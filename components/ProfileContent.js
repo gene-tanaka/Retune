@@ -30,8 +30,8 @@ const ProfileContent = ({ userId, handleBack }) => {
   const [following, setFollowing] = useState(null);
   const [followers, setFollowers] = useState(null);
   const [favoriteSong, setFavoriteSong] = useState(null);
-  const [followingBool, setFollowingBool] = useState(false);
 
+  const isFollowedByLoggedInUser = loggedInFollowingProfiles.some(f => f.id === Number(userId));
   const router = useRouter();
 
   useEffect(() => {
@@ -97,9 +97,6 @@ const ProfileContent = ({ userId, handleBack }) => {
       setPosts(sortedPosts);
       setFollowing(fetchFollowing);
       setFollowers(fetchFollowers);
-      if (fetchLoggedInFollowingProfiles.some(f => f.id === Number(userId))) {
-        setFollowingBool(true);
-      }
       setLoggedInFollowingProfiles(fetchLoggedInFollowingProfiles);
       setLoggedInFollowerProfiles(fetchLoggedInFollowerProfiles);
     } catch (error) {
@@ -204,7 +201,7 @@ const ProfileContent = ({ userId, handleBack }) => {
           </View>
 
           {loggedInUserId === userId ? null : following &&
-            followingBool === true ? (
+            isFollowedByLoggedInUser ? (
             <TouchableOpacity
               style={{
                 backgroundColor: "white",
@@ -218,7 +215,6 @@ const ProfileContent = ({ userId, handleBack }) => {
               }}
               onPress={() => {
                 handleUnfollow();
-                setFollowingBool(false);
               }}
             >
               <Text style={{ color: "black" }}>⊖ Unfollow</Text>
@@ -235,7 +231,6 @@ const ProfileContent = ({ userId, handleBack }) => {
               }}
               onPress={() => {
                 handleFollow();
-                setFollowingBool(true);
               }}
             >
               <Text style={{ color: "white" }}>⊕ Follow</Text>
