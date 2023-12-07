@@ -28,7 +28,6 @@ const ProfileContent = ({ userId, handleBack }) => {
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState(null);
   const [following, setFollowing] = useState(null);
-  const [loggedInFollowing, setLoggedInFollowing] = useState(null);
   const [followers, setFollowers] = useState(null);
   const [favoriteSong, setFavoriteSong] = useState(null);
   const [followingBool, setFollowingBool] = useState(false);
