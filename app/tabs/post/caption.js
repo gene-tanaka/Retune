@@ -22,7 +22,7 @@ const windowWidth = Dimensions.get("window").width;
 
 export default function Page() {
   const params = useLocalSearchParams();
-  const { loggedInUserId } = useUser();
+  const { loggedInUserId, setPosted } = useUser();
   const preview = params.preview;
   const image = params.image;
   const type = params.type;
@@ -78,9 +78,9 @@ export default function Page() {
               router.back();
             }
             router.replace("tabs/post");
+            setPosted(true);
             router.push({
               pathname: "tabs/home",
-              params: { success: "true" },
             });
           }}
         >

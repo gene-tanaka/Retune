@@ -6,13 +6,10 @@ import {
   FlatList,
   ImageBackground,
 } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../../contexts/UserContext";
-import {
-  getFollowingList,
-  getPostsByUserIds,
-  getUsersByIds,
-} from "../../api";
+import { getFollowingList, getPostsByUserIds, getUsersByIds } from "../../api";
 import Post from "../../../components/Post";
 
 const MyPost = ({ data, usernames }) => {
@@ -44,14 +41,22 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 );
 
 export default function Page() {
-  const { loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
+  const {
+    loggedInUserId,
+    loggedInFollowingProfiles,
+    setLoggedInFollowingProfiles,
+    posted,
+    setPosted,
+  } = useUser();
   const [posts, setPosts] = useState(null);
   const [usernames, setUsernames] = useState(null);
 
   const fetchFollowing = React.useCallback(async () => {
     try {
       const following = await getFollowingList(loggedInUserId);
-      if (JSON.stringify(following) !== JSON.stringify(loggedInFollowingProfiles)) {
+      if (
+        JSON.stringify(following) !== JSON.stringify(loggedInFollowingProfiles)
+      ) {
         setLoggedInFollowingProfiles(following);
       }
       const followingIds = following.map((user) => user.id);
@@ -66,9 +71,11 @@ export default function Page() {
         setUsernames(usernameMap);
 
         const fetchedPosts = await getPostsByUserIds(followingIds);
-        const sortedPosts = fetchedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+        const sortedPosts = fetchedPosts.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
         setPosts(sortedPosts);
-        params.success = "false";
+        setPosted(false);
       }
     } catch (error) {
       console.error("Error loading posts: ", error);
@@ -76,9 +83,8 @@ export default function Page() {
   }, [loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles]);
 
   useEffect(() => {
-    if (params && params.success === "true") {
     fetchFollowing();
-  }, [fetchFollowing, params]);
+  }, [fetchFollowing, posted]);
 
   return (
     <ImageBackground
