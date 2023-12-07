@@ -168,7 +168,11 @@ export default function CommentPage() {
             />
           </View>
           <TouchableOpacity onPress={handlePostComment}>
-            <Ionicons name="arrow-up-circle" size={40} color="blue" />
+            <Ionicons
+              name="arrow-up-circle"
+              size={40}
+              color={Themes.colors.buttons}
+            />
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -199,7 +203,7 @@ const localStyles = StyleSheet.create({
     backgroundColor: "black",
     borderRadius: 20,
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: Themes.colors.secondary,
     padding: 10,
     width: 325,
     marginRight: 5,
