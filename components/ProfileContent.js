@@ -6,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
   ImageBackground,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -17,7 +16,6 @@ import {
   getPostsByUserId,
   getUsersByIds,
   followUser,
-  getFollowingListIDs,
   unfollowUser,
 } from "../app/api";
 import SongPreview from "./SongPreview";
@@ -83,14 +81,12 @@ const ProfileContent = ({ userId, handleBack }) => {
         fetchedPosts,
         fetchFollowing,
         fetchFollowers,
-        fetchLoggedInFollowing,
         fetchLoggedInFollowingProfiles,
         fetchLoggedInFollowerProfiles,
       ] = await Promise.all([
         getPostsByUserId(userId),
         getFollowingList(userId),
         getFollowerList(userId),
-        getFollowingListIDs(loggedInUserId),
         getFollowingList(loggedInUserId),
         getFollowerList(loggedInUserId),
       ]);
@@ -102,8 +98,7 @@ const ProfileContent = ({ userId, handleBack }) => {
       setPosts(sortedPosts);
       setFollowing(fetchFollowing);
       setFollowers(fetchFollowers);
-      setLoggedInFollowing(fetchLoggedInFollowing);
-      if (fetchLoggedInFollowing.includes(Number(userId))) {
+      if (fetchLoggedInFollowingProfiles.some(f => f.id === Number(userId))) {
         setFollowingBool(true);
       }
       setLoggedInFollowingProfiles(fetchLoggedInFollowingProfiles);
@@ -118,8 +113,7 @@ const ProfileContent = ({ userId, handleBack }) => {
     if (
       posts === null ||
       following === null ||
-      followers === null ||
-      loggedInFollowing === null
+      followers === null
     ) {
       fetchData();
     }
@@ -210,7 +204,7 @@ const ProfileContent = ({ userId, handleBack }) => {
             </View>
           </View>
 
-          {loggedInUserId === userId ? null : loggedInFollowing &&
+          {loggedInUserId === userId ? null : following &&
             followingBool === true ? (
             <TouchableOpacity
               style={{
