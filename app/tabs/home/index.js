@@ -4,19 +4,16 @@ import {
   StatusBar,
   SafeAreaView,
   FlatList,
-  ActivityIndicator,
   ImageBackground,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useUser } from "../../../contexts/UserContext";
 import {
   getFollowingList,
-  getFollowingListIDs,
   getPostsByUserIds,
   getUsersByIds,
 } from "../../api";
 import Post from "../../../components/Post";
-import { useLocalSearchParams, useRouter } from "expo-router";
 
 const MyPost = ({ data, usernames }) => {
   const post = data.item;
