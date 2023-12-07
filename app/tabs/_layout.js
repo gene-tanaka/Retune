@@ -8,6 +8,7 @@ export default function HomeLayout() {
     <UserProvider>
       <Tabs
         screenOptions={{
+          tabBarHideOnKeyboard: true,
           headerShown: false,
           tabBarActiveTintColor: "white",
           tabBarStyle: {
