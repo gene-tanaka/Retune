@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useUser } from "../../../contexts/UserContext";
 import {
   getFollowingList,
@@ -48,14 +48,16 @@ export default function Page() {
   const { loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
   const [posts, setPosts] = useState(null);
   const [usernames, setUsernames] = useState(null);
-  const [lastKnownFollowingProfiles, setLastKnownFollowingProfiles] = useState(null);
 
-  const fetchFollowing = async () => {
+  const fetchFollowing = React.useCallback(async () => {
     try {
       const following = await getFollowingList(loggedInUserId);
-      setLoggedInFollowingProfiles(following);
-      const followingIds = following.map((user) => user.id)
+      if (JSON.stringify(following) !== JSON.stringify(loggedInFollowingProfiles)) {
+        setLoggedInFollowingProfiles(following);
+      }
+      const followingIds = following.map((user) => user.id);
       followingIds.push(loggedInUserId);
+
       if (followingIds.length > 0) {
         const users = await getUsersByIds(followingIds);
         const usernameMap = users.reduce((acc, user) => {
@@ -65,25 +67,17 @@ export default function Page() {
         setUsernames(usernameMap);
 
         const fetchedPosts = await getPostsByUserIds(followingIds);
-        const sortedPosts = fetchedPosts.sort((a, b) => {
-          return new Date(b.timestamp) - new Date(a.timestamp);
-        });
+        const sortedPosts = fetchedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         setPosts(sortedPosts);
       }
     } catch (error) {
       console.error("Error loading posts: ", error);
     }
-  };
+  }, [loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles]);
 
   useEffect(() => {
-    const hasFollowingProfilesChanged = loggedInFollowingProfiles !== lastKnownFollowingProfiles;
-    const shouldFetch = posts === null || usernames === null || hasFollowingProfilesChanged;
-
-    if (shouldFetch) {
-      fetchFollowing();
-      setLastKnownFollowingProfiles(loggedInFollowingProfiles);
-    }
-  }, [loggedInFollowingProfiles, posts, usernames]);
+    fetchFollowing();
+  }, [fetchFollowing]);
 
   return (
     <ImageBackground
