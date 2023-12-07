@@ -4,25 +4,23 @@ import {
   StatusBar,
   SafeAreaView,
   FlatList,
-  ActivityIndicator,
   ImageBackground,
 } from "react-native";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useUser } from "../../../contexts/UserContext";
 import {
-  getFollowingListIDs,
+  getFollowingList,
   getPostsByUserIds,
   getUsersByIds,
 } from "../../api";
 import Post from "../../../components/Post";
-import { useLocalSearchParams, useRouter } from "expo-router";
 
 const MyPost = ({ data, usernames }) => {
   const post = data.item;
   return (
     <Post
       key={post.id}
-      user={"@" + usernames[post.userId].username}
+      user={"@" + usernames[post.userId]?.username}
       imageUrl={post.imageUrl}
       caption={post.caption}
       preview={post.preview}
@@ -30,7 +28,7 @@ const MyPost = ({ data, usernames }) => {
       artist={post.artist}
       duration={post.duration}
       timestamp={post.timestamp}
-      profile={usernames[post.userId].profile}
+      profile={usernames[post.userId]?.profile}
     />
   );
 };
@@ -44,40 +42,39 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 );
 
 export default function Page() {
-  const { loggedInUserId } = useUser();
-  const [following, setFollowing] = useState([loggedInUserId]);
+  const { loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
   const [posts, setPosts] = useState(null);
   const [usernames, setUsernames] = useState(null);
-  const params = useLocalSearchParams();
 
-  const fetchFollowing = async () => {
+  const fetchFollowing = React.useCallback(async () => {
     try {
-      const followingIds = await getFollowingListIDs(loggedInUserId);
-      setFollowing((current) => current.concat([...followingIds]));
-      if (following.length > 0) {
-        const users = await getUsersByIds(following);
+      const following = await getFollowingList(loggedInUserId);
+      if (JSON.stringify(following) !== JSON.stringify(loggedInFollowingProfiles)) {
+        setLoggedInFollowingProfiles(following);
+      }
+      const followingIds = following.map((user) => user.id);
+      followingIds.push(loggedInUserId);
+
+      if (followingIds.length > 0) {
+        const users = await getUsersByIds(followingIds);
         const usernameMap = users.reduce((acc, user) => {
           acc[user.id] = { username: user.username, profile: user.profilePic };
           return acc;
         }, {});
         setUsernames(usernameMap);
 
-        const fetchedPosts = await getPostsByUserIds(following);
-        const sortedPosts = fetchedPosts.sort((a, b) => {
-          return new Date(b.timestamp) - new Date(a.timestamp);
-        });
+        const fetchedPosts = await getPostsByUserIds(followingIds);
+        const sortedPosts = fetchedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         setPosts(sortedPosts);
       }
     } catch (error) {
       console.error("Error loading posts: ", error);
     }
-  };
+  }, [loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles]);
 
   useEffect(() => {
-    if (posts === null || usernames === null) {
-      fetchFollowing();
-    }
-  }, [posts, usernames, params]);
+    fetchFollowing();
+  }, [fetchFollowing]);
 
   return (
     <ImageBackground
