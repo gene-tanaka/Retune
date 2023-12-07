@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { getCommentsByPostId, createComment } from "../../api";
 import { useState, useEffect } from "react";
-import { useLocalSearchParams, router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { Themes } from "../../../assets/Themes";
 import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "../../../contexts/UserContext";
