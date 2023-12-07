@@ -25,7 +25,13 @@ import { Themes } from "../assets/Themes";
 import Post from "./Post";
 
 const ProfileContent = ({ userId, handleBack }) => {
-  const { loggedInUserId, loggedInFollowerProfiles, setLoggedInFollowerProfiles, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
+  const {
+    loggedInUserId,
+    loggedInFollowerProfiles,
+    setLoggedInFollowerProfiles,
+    loggedInFollowingProfiles,
+    setLoggedInFollowingProfiles,
+  } = useUser();
   const params = useLocalSearchParams();
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState(null);
@@ -160,7 +166,7 @@ const ProfileContent = ({ userId, handleBack }) => {
                     style={styles.profilePic}
                   />
                 ) : (
-                  <Text style={styles.addPhotoText}>Add Photo</Text>
+                  <Image source={{ uri: uri_prefix + "profile/default.png" }} />
                 )}
               </TouchableOpacity>
             </View>
@@ -185,7 +191,9 @@ const ProfileContent = ({ userId, handleBack }) => {
                 }}
               >
                 <Text style={styles.statNumber}>
-                  {loggedInUserId === userId ? loggedInFollowerProfiles?.length : followers?.length}
+                  {loggedInUserId === userId
+                    ? loggedInFollowerProfiles?.length
+                    : followers?.length}
                 </Text>
                 <Text style={styles.statLabel}>Followers</Text>
               </TouchableOpacity>
@@ -203,7 +211,9 @@ const ProfileContent = ({ userId, handleBack }) => {
                 }}
               >
                 <Text style={styles.statNumber}>
-                  {loggedInUserId === userId ? loggedInFollowingProfiles?.length : following?.length}
+                  {loggedInUserId === userId
+                    ? loggedInFollowingProfiles?.length
+                    : following?.length}
                 </Text>
                 <Text style={styles.statLabel}>Following</Text>
               </TouchableOpacity>
@@ -267,7 +277,7 @@ const ProfileContent = ({ userId, handleBack }) => {
           Current Favorite Song
         </Text>
         <View style={styles.favSongContainer}>
-          {!favoriteSong ? (
+          {!favoriteSong && loggedInUserId === userId ? (
             <TouchableOpacity
               style={styles.songContainer}
               onPress={() =>
@@ -287,13 +297,15 @@ const ProfileContent = ({ userId, handleBack }) => {
                 marginBottom: 20,
               }}
             >
-              <SongPreview
-                user={profile.username}
-                preview={favoriteSong.preview}
-                title={favoriteSong.title}
-                artist={favoriteSong.artist}
-                duration={favoriteSong.duration}
-              />
+              {favoriteSong ? (
+                <SongPreview
+                  user={profile.username}
+                  preview={favoriteSong.preview}
+                  title={favoriteSong.title}
+                  artist={favoriteSong.artist}
+                  duration={favoriteSong.duration}
+                />
+              ) : null}
               {loggedInUserId === userId ? (
                 <TouchableOpacity
                   style={{
@@ -331,6 +343,7 @@ const ProfileContent = ({ userId, handleBack }) => {
               duration={post.duration}
               timestamp={post.timestamp}
               profile={profile.profilePic}
+              userId={userId}
             />
           ))}
         </View>

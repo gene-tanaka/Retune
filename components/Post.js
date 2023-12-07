@@ -4,12 +4,8 @@ import {
   View,
   SafeAreaView,
   Dimensions,
-  Pressable,
   Button,
   Image,
-  TextInput,
-  ScrollView,
-  Touchable,
 } from "react-native";
 import { useState } from "react";
 import { Themes } from "../assets/Themes";
@@ -30,6 +26,7 @@ const Post = ({
   duration,
   timestamp,
   profile,
+  userId,
 }) => {
   const uri =
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
@@ -79,6 +76,14 @@ const Post = ({
                 titleStyle={{ fontSize: 18 }}
                 color="white"
                 title={user}
+                onPress={() =>
+                  router.push({
+                    pathname: "/tabs/home/openProfile",
+                    params: {
+                      userId: userId,
+                    },
+                  })
+                }
               />
             </View>
           </View>

@@ -26,6 +26,16 @@ export default function HomeLayout() {
           headerTintColor: "#848487",
         }}
       />
+      <Stack.Screen
+        name="openProfile"
+        options={{
+          title: "View Profile",
+          headerShown: true,
+          headerStyle: { backgroundColor: "black" },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "#848487",
+        }}
+      />
     </Stack>
   );
 }
