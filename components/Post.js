@@ -4,12 +4,8 @@ import {
   View,
   SafeAreaView,
   Dimensions,
-  Pressable,
   Button,
   Image,
-  TextInput,
-  ScrollView,
-  Touchable,
 } from "react-native";
 import { useState } from "react";
 import { Themes } from "../assets/Themes";
@@ -17,10 +13,12 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import SongPreview from "../components/SongPreview";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import { useUser } from "../contexts/UserContext";
 
 const windowWidth = Dimensions.get("window").width;
 
 const Post = ({
+  postId,
   user,
   imageUrl,
   caption,
@@ -30,6 +28,7 @@ const Post = ({
   duration,
   timestamp,
   profile,
+  userId,
 }) => {
   const uri =
     "https://gvtvaagnqoeqzniftwsh.supabase.co/storage/v1/object/public/images/" +
@@ -58,6 +57,7 @@ const Post = ({
       setLiked("white");
     }
   }
+  const { loggedInUserId } = useUser();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,6 +79,18 @@ const Post = ({
                 titleStyle={{ fontSize: 18 }}
                 color="white"
                 title={user}
+                onPress={() => {
+                  loggedInUserId === userId
+                    ? router.push({
+                        pathname: "/tabs/profile",
+                      })
+                    : router.push({
+                        pathname: "/tabs/home/openProfile",
+                        params: {
+                          userId: userId,
+                        },
+                      });
+                }}
               />
             </View>
           </View>
@@ -110,6 +122,7 @@ const Post = ({
                 onPress={() =>
                   router.push({
                     pathname: "/tabs/home/comments",
+                    params: { postId: postId },
                   })
                 }
               >

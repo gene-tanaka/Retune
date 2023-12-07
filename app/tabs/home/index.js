@@ -20,6 +20,7 @@ const MyPost = ({ data, usernames }) => {
   return (
     <Post
       key={post.id}
+      postId={post.id}
       user={"@" + usernames[post.userId]?.username}
       imageUrl={post.imageUrl}
       caption={post.caption}
@@ -28,6 +29,7 @@ const MyPost = ({ data, usernames }) => {
       artist={post.artist}
       duration={post.duration}
       timestamp={post.timestamp}
+      userId={post.userId}
       profile={usernames[post.userId]?.profile}
     />
   );
@@ -66,6 +68,7 @@ export default function Page() {
         const fetchedPosts = await getPostsByUserIds(followingIds);
         const sortedPosts = fetchedPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
         setPosts(sortedPosts);
+        params.success = "false";
       }
     } catch (error) {
       console.error("Error loading posts: ", error);
@@ -73,8 +76,9 @@ export default function Page() {
   }, [loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles]);
 
   useEffect(() => {
+    if (params && params.success === "true") {
     fetchFollowing();
-  }, [fetchFollowing]);
+  }, [fetchFollowing, params]);
 
   return (
     <ImageBackground

@@ -210,13 +210,21 @@ export const getCommentsByPostId = async (postId) => {
   try {
     const { data, error } = await supabase
       .from("Comments")
-      .select("*")
+      .select(
+        `
+        *,
+        Users (
+          username,
+          profile_pic
+        )
+      `
+      )
       .eq("post_id", postId);
 
     if (error) throw error;
     return keysToCamel(data);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching comments:", error);
     return [];
   }
 };
