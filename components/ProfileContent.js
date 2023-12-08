@@ -225,7 +225,7 @@ const ProfileContent = ({ userId, handleBack }) => {
             followingBool === true ? (
             <TouchableOpacity
               style={{
-                backgroundColor: "white",
+                backgroundColor: Themes.colors.containers,
                 alignItems: "center",
                 width: 100,
                 padding: 5,
@@ -239,7 +239,7 @@ const ProfileContent = ({ userId, handleBack }) => {
                 setFollowingBool(false);
               }}
             >
-              <Text style={{ color: "black" }}>⊖ Unfollow</Text>
+              <Text style={{ color: "white" }}>⊖ Unfollow</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity

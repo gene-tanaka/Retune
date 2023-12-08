@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#DDD",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 10,
@@ -104,9 +103,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 10,
-    backgroundColor: "white",
+    backgroundColor: Themes.colors.containers,
     borderRadius: 20,
-    padding: 35,
+    padding: 20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -116,6 +115,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    width: windowWidth * 0.8,
   },
   modalHeader: {
     width: "100%",
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   modalText: {
     margin: 30,
     fontSize: 20,
+    color: "white",
   },
 });
 
