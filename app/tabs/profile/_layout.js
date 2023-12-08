@@ -33,6 +33,16 @@ export default function ProfileLayout() {
         }}
       />
       <Stack.Screen
+        name="comments"
+        options={{
+          title: "View Comments",
+          headerShown: true,
+          headerStyle: { backgroundColor: "black" },
+          headerTitleStyle: { color: "white" },
+          headerTintColor: "#848487",
+        }}
+      />
+      <Stack.Screen
         name="showFollowing"
         options={{
           title: "Following",

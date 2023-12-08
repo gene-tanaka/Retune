@@ -335,6 +335,7 @@ const ProfileContent = ({ userId, handleBack }) => {
           {posts?.map((post) => (
             <Post
               key={post.id}
+              postId={post.id}
               user={"@" + profile.username}
               imageUrl={post.imageUrl}
               caption={post.caption}
