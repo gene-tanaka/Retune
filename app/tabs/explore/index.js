@@ -8,6 +8,7 @@ import {
   ImageBackground,
   Modal,
   Image,
+  Dimensions,
 } from "react-native";
 import styles from "../../../styles";
 import { useUser } from "../../../contexts/UserContext";
@@ -17,8 +18,14 @@ import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import SongPreview from "../../../components/SongPreview";
 
+const windowWidth = Dimensions.get("window").width;
+
 export default function Page() {
-  const { loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
+  const {
+    loggedInUserId,
+    loggedInFollowingProfiles,
+    setLoggedInFollowingProfiles,
+  } = useUser();
   const router = useRouter();
   const [exploreUserIndex, setExploreUserIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -193,13 +200,15 @@ export default function Page() {
                   About {exploreUsers[exploreUserIndex].firstName}{" "}
                   {exploreUsers[exploreUserIndex].lastName}
                 </Text>
-                <View style={styles.profilePic}>
-                  <Text style={styles.initials}>
-                    {renderInitials(
-                      exploreUsers[exploreUserIndex].firstName,
-                      exploreUsers[exploreUserIndex].lastName
-                    )}
-                  </Text>
+                <View>
+                  {exploreUsers[exploreUserIndex] ? (
+                    <Image
+                      style={styles.profilePic}
+                      source={{
+                        uri: uri + exploreUsers[exploreUserIndex].profilePic,
+                      }}
+                    />
+                  ) : null}
                 </View>
                 <Text style={styles.description}>
                   {exploreUsers[exploreUserIndex].description}
@@ -252,7 +261,7 @@ export default function Page() {
           onRequestClose={handleCloseModal}
         >
           <View style={styles.centeredView}>
-            <View style={[styles.modalView, { padding: 30 }]}>
+            <View style={[styles.modalView]}>
               <View
                 style={[
                   styles.modalHeader,
@@ -261,16 +270,17 @@ export default function Page() {
                     flexDirection: "row",
                     position: "absolute",
                     justifyContent: "flex-end",
+                    width: windowWidth * 0.8,
                   },
                 ]}
               >
                 <TouchableOpacity onPress={handleCloseModal} style={{}}>
-                  <Ionicons name="close-circle" size={40} color="red" />
+                  <Ionicons name="close-circle" size={35} color="red" />
                 </TouchableOpacity>
               </View>
 
               <Text style={styles.modalText}>
-                Added user @{exploreUsers[exploreUserIndex]?.username}!
+                Followed user @{exploreUsers[exploreUserIndex]?.username}!
               </Text>
 
               <View>
