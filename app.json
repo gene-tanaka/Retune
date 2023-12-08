@@ -29,6 +29,20 @@
     "plugins": [
       "expo-router"
     ],
-    "scheme": "expo-router-test"
+    "scheme": "expo-router-test",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "dd5d4030-2e85-4861-8dde-08a644f16268"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/dd5d4030-2e85-4861-8dde-08a644f16268"
+    }
   }
 }
