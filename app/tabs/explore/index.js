@@ -18,7 +18,11 @@ import { useRouter } from "expo-router";
 import SongPreview from "../../../components/SongPreview";
 
 export default function Page() {
-  const { loggedInUserId, loggedInFollowingProfiles, setLoggedInFollowingProfiles } = useUser();
+  const {
+    loggedInUserId,
+    loggedInFollowingProfiles,
+    setLoggedInFollowingProfiles,
+  } = useUser();
   const router = useRouter();
   const [exploreUserIndex, setExploreUserIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -144,17 +148,6 @@ export default function Page() {
                     },
                   ]}
                 >
-                  <Image
-                    source={{
-                      uri: uri + user.profilePic,
-                    }}
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      marginRight: 10,
-                    }}
-                  />
                   <View
                     style={{
                       flexDirection: "column",
@@ -194,12 +187,17 @@ export default function Page() {
                   {exploreUsers[exploreUserIndex].lastName}
                 </Text>
                 <View style={styles.profilePic}>
-                  <Text style={styles.initials}>
-                    {renderInitials(
-                      exploreUsers[exploreUserIndex].firstName,
-                      exploreUsers[exploreUserIndex].lastName
-                    )}
-                  </Text>
+                  <Image
+                    source={{
+                      uri: uri + user.profilePic,
+                    }}
+                    style={{
+                      width: 40,
+                      height: 40,
+                      borderRadius: 50,
+                      marginRight: 10,
+                    }}
+                  />
                 </View>
                 <Text style={styles.description}>
                   {exploreUsers[exploreUserIndex].description}
