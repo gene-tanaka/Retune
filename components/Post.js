@@ -12,7 +12,7 @@ import { Themes } from "../assets/Themes";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import SongPreview from "../components/SongPreview";
 import { FontAwesome } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import { useUser } from "../contexts/UserContext";
 
 const windowWidth = Dimensions.get("window").width;
@@ -49,6 +49,7 @@ const Post = ({
   };
   const [liked, setLiked] = useState("white");
   const router = useRouter();
+  const [_, path] = useSegments();
 
   function likeImage() {
     if (liked === "white") {
@@ -119,12 +120,12 @@ const Post = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ marginLeft: 15, marginBottom: 4 }}
-                onPress={() =>
+                onPress={() => {
                   router.push({
-                    pathname: "/tabs/home/comments",
+                    pathname: "/tabs/" + path + "/comments",
                     params: { postId: postId },
-                  })
-                }
+                  });
+                }}
               >
                 <FontAwesome name="comment" size={25} color="white" />
               </TouchableOpacity>
